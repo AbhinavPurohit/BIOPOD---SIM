@@ -85,12 +85,12 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
   }, [scrollYProgress]);
 
   // ================= SCROLL-DRIVEN HARDWARE 3D TRANSFORMS =================
-  // Scaled 25% larger across all steps (0.86 -> 1.08, 0.90 -> 1.13, 0.92 -> 1.15)
-  // Stage 0: Positioned comfortably below hero text (y: 85px)
-  // Stage 1: Moves right (26%), scales up to 1.12, tilts left for algae feature on left (0.20 -> 0.44)
-  // Stage 2: Moves left (-26%), tilts right for HEPA feature on right (0.45 -> 0.68)
-  // Stage 3: Moves to center-top (y: -45px), scales 1.05 for IoT telemetry cards below (0.68 -> 0.86)
-  // Stage 4: Returns to center (y: -30px) with strong clean CTA (0.86 -> 1.00)
+  // Scaled cleanly (+20%) for prominent visual presence with well-balanced negative space
+  // Stage 0: Positioned at y: 95px with scale 1.02
+  // Stage 1: Moves right (26%), scales to 1.08, tilts left for algae feature on left
+  // Stage 2: Moves left (-26%), tilts right for HEPA feature on right
+  // Stage 3: Moves to center-top (y: -35px), scales 1.00 for IoT telemetry dock below
+  // Stage 4: Returns to center (y: -25px) with clean CTA (1.06)
 
   const hardwareX = useTransform(
     smoothProgress,
@@ -101,13 +101,13 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
   const hardwareY = useTransform(
     smoothProgress,
     [0, 0.15, 0.28, 0.42, 0.52, 0.66, 0.74, 0.86, 1.0],
-    ['85px', '85px', '20px', '20px', '20px', '20px', '-45px', '-30px', '-30px']
+    ['95px', '95px', '20px', '20px', '20px', '20px', '-35px', '-25px', '-25px']
   );
 
   const hardwareScale = useTransform(
     smoothProgress,
     [0, 0.15, 0.28, 0.42, 0.52, 0.66, 0.74, 0.86, 1.0],
-    [1.08, 1.08, 1.13, 1.13, 1.13, 1.13, 1.05, 1.15, 1.15]
+    [1.02, 1.02, 1.08, 1.08, 1.08, 1.08, 1.00, 1.06, 1.06]
   );
 
   const hardwareRotateY = useTransform(
@@ -119,7 +119,7 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
   const hardwareRotateX = useTransform(
     smoothProgress,
     [0, 0.15, 0.28, 0.42, 0.52, 0.66, 0.74, 0.86, 1.0],
-    [2, 2, 3, 3, 3, 3, 4, 0, 0]
+    [2, 2, 3, 3, 3, 3, 3, 0, 0]
   );
 
   // ================= SCROLL-DRIVEN FEATURE OPACITIES & TRANSLATIONS =================
@@ -201,26 +201,26 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
             y: reducedMotion ? 0 : heroTextY,
             pointerEvents: activeStage === 0 ? 'auto' : 'none',
           }}
-          className="absolute top-0 inset-x-0 z-20 flex flex-col items-center pt-8 sm:pt-10 px-4 text-center max-w-4xl mx-auto"
+          className="absolute top-0 inset-x-0 z-20 flex flex-col items-center pt-4 sm:pt-5 px-4 text-center max-w-2xl mx-auto"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0B3A1A]/80 border border-[#1E5C33] text-[#69B82F] text-[11px] font-mono font-bold tracking-wider uppercase mb-2 shadow-lg backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-[#69B82F] animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0B3A1A]/85 border border-[#1E5C33] text-[#69B82F] text-[11px] font-mono font-bold tracking-wider uppercase mb-1 shadow-md backdrop-blur-md">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#69B82F] animate-pulse" />
             V2.4 BIO-REACTIVE AIR PURIFIER
           </div>
 
-          <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-[#FAF8F2] uppercase font-sans">
+          <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-[#FAF8F2] uppercase font-sans">
             BIOPOD
           </h1>
 
-          <p className="mt-1 text-lg sm:text-2xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#FAF8F2] via-[#FAF8F2] to-[#69B82F]">
+          <p className="mt-0.5 text-base sm:text-lg font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#FAF8F2] via-[#FAF8F2] to-[#69B82F]">
             Breathe Better. Think Sharper.
           </p>
 
-          <p className="mt-1.5 max-w-xl text-xs sm:text-sm text-[#A0B2A5] font-sans font-normal leading-relaxed">
+          <p className="mt-1 max-w-md text-xs sm:text-sm text-[#A0B2A5] font-sans font-normal leading-relaxed">
             Living microalgae carbon sequestration combined with medical-grade True HEPA H13 filtration.
           </p>
 
-          <div className="mt-3 inline-flex items-center gap-2 text-[11px] font-mono text-[#8C9A8F] bg-[#0A120D]/60 px-3 py-1 rounded-full border border-[#1E2E22]">
+          <div className="mt-2 inline-flex items-center gap-1.5 text-[11px] font-mono text-[#8C9A8F] bg-[#0A120D]/60 px-3 py-1 rounded-full border border-[#1E2E22]">
             <ChevronDown className="w-3.5 h-3.5 text-[#69B82F] animate-bounce" />
             <span>Scroll down to inspect architecture</span>
           </div>
@@ -235,9 +235,9 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
             x: reducedMotion ? 0 : algaeX,
             pointerEvents: activeStage === 1 ? 'auto' : 'none',
           }}
-          className="absolute left-6 sm:left-12 lg:left-20 top-1/2 -translate-y-1/2 z-20 max-w-md xl:max-w-lg"
+          className="absolute left-4 sm:left-8 lg:left-12 top-1/2 -translate-y-1/2 z-20 max-w-md xl:max-w-lg"
         >
-          <div className="space-y-4 bg-[#090F0C]/85 border border-[#1E3F27] p-6 sm:p-7 rounded-3xl backdrop-blur-xl shadow-2xl">
+          <div className="space-y-3.5 bg-[#090F0C]/92 border border-[#1E3F27] p-5 sm:p-6 rounded-2xl sm:rounded-3xl backdrop-blur-xl shadow-2xl">
             <div className="flex items-center gap-2 text-xs font-mono text-[#69B82F] uppercase tracking-widest font-bold">
               <Leaf className="w-4 h-4 text-[#69B82F]" />
               01 / LIVING ALGAE CARBON CAPTURE
@@ -259,11 +259,11 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
             <div className="grid grid-cols-2 gap-2.5 pt-1 font-mono text-xs">
               <div className="bg-[#050A07] p-3 rounded-xl border border-[#1B3523]">
                 <span className="text-[#8C9A8F] block text-[10px]">CO₂ DRAWDOWN</span>
-                <strong className="text-sm font-bold text-[#69B82F]">-350 ppm/hr</strong>
+                <strong className="text-sm sm:text-base font-bold text-[#69B82F]">-350 ppm/hr</strong>
               </div>
               <div className="bg-[#050A07] p-3 rounded-xl border border-[#1B3523]">
                 <span className="text-[#8C9A8F] block text-[10px]">OXYGEN OUTPUT</span>
-                <strong className="text-sm font-bold text-[#69B82F]">+42 L pure O₂</strong>
+                <strong className="text-sm sm:text-base font-bold text-[#69B82F]">+42 L pure O₂</strong>
               </div>
             </div>
           </div>
@@ -278,9 +278,9 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
             x: reducedMotion ? 0 : hepaX,
             pointerEvents: activeStage === 2 ? 'auto' : 'none',
           }}
-          className="absolute right-6 sm:right-12 lg:right-20 top-1/2 -translate-y-1/2 z-20 max-w-md xl:max-w-lg"
+          className="absolute right-4 sm:right-8 lg:left-auto lg:right-12 top-1/2 -translate-y-1/2 z-20 max-w-md xl:max-w-lg"
         >
-          <div className="space-y-4 bg-[#070D12]/85 border border-[#173847] p-6 sm:p-7 rounded-3xl backdrop-blur-xl shadow-2xl">
+          <div className="space-y-3.5 bg-[#070D12]/92 border border-[#173847] p-5 sm:p-6 rounded-2xl sm:rounded-3xl backdrop-blur-xl shadow-2xl">
             <div className="flex items-center gap-2 text-xs font-mono text-[#42B9D9] uppercase tracking-widest font-bold">
               <ShieldCheck className="w-4 h-4 text-[#42B9D9]" />
               02 / TRUE HEPA H13 FILTRATION
@@ -302,11 +302,11 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
             <div className="grid grid-cols-2 gap-2.5 pt-1 font-mono text-xs">
               <div className="bg-[#04080B] p-3 rounded-xl border border-[#132E3B]">
                 <span className="text-[#8C9A8F] block text-[10px]">AEROSOL CAPTURE</span>
-                <strong className="text-sm font-bold text-[#42B9D9]">99.97% @ 0.1µm</strong>
+                <strong className="text-sm sm:text-base font-bold text-[#42B9D9]">99.97% @ 0.1µm</strong>
               </div>
               <div className="bg-[#04080B] p-3 rounded-xl border border-[#132E3B]">
                 <span className="text-[#8C9A8F] block text-[10px]">CLEAN AIR DELIVERY</span>
-                <strong className="text-sm font-bold text-[#42B9D9]">3.6 m³/min CADR</strong>
+                <strong className="text-sm sm:text-base font-bold text-[#42B9D9]">3.6 m³/min CADR</strong>
               </div>
             </div>
 
@@ -326,9 +326,9 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
             y: reducedMotion ? 0 : iotY,
             pointerEvents: activeStage === 3 ? 'auto' : 'none',
           }}
-          className="absolute inset-x-4 sm:inset-x-8 bottom-8 z-20 max-w-4xl mx-auto"
+          className="absolute inset-x-4 sm:inset-x-8 bottom-6 z-20 max-w-4xl mx-auto"
         >
-          <div className="bg-[#090F0C]/90 border border-[#1E3F27] p-5 sm:p-6 rounded-3xl backdrop-blur-xl shadow-2xl flex flex-col md:flex-row items-center justify-between gap-5">
+          <div className="bg-[#090F0C]/92 border border-[#1E3F27] p-4.5 sm:p-5.5 rounded-2xl sm:rounded-3xl backdrop-blur-xl shadow-2xl flex flex-col md:flex-row items-center justify-between gap-5">
             <div className="space-y-1.5 max-w-lg">
               <div className="flex items-center gap-2 text-xs font-mono text-[#E4B83D] uppercase tracking-widest font-bold">
                 <Cpu className="w-4 h-4 text-[#E4B83D]" />
@@ -337,7 +337,7 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
               <h3 className="text-xl sm:text-2xl font-extrabold text-[#FAF8F2] tracking-tight">
                 Self-Adjusting Smart Purifier
               </h3>
-              <p className="text-xs text-[#A0B2A5] leading-relaxed">
+              <p className="text-xs sm:text-sm text-[#A0B2A5] leading-relaxed">
                 Precision optical laser sensors track dust and CO₂ every second. The onboard computer automatically adjusts fan speed and LED lighting so your air stays clean without touching a button.
               </p>
             </div>
@@ -368,9 +368,9 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
             y: reducedMotion ? 0 : ctaY,
             pointerEvents: activeStage === 4 ? 'auto' : 'none',
           }}
-          className="absolute inset-x-4 bottom-10 z-20 max-w-2xl mx-auto text-center"
+          className="absolute inset-x-4 bottom-8 z-20 max-w-2xl mx-auto text-center"
         >
-          <div className="bg-[#080E0A]/92 border border-[#1E3F27] p-5 sm:p-6 rounded-3xl backdrop-blur-2xl shadow-2xl space-y-4">
+          <div className="bg-[#080E0A]/95 border border-[#1E3F27] p-5 sm:p-6 rounded-2xl sm:rounded-3xl backdrop-blur-2xl shadow-2xl space-y-4">
             <div>
               <h3 className="text-xl sm:text-2xl font-extrabold text-[#FAF8F2] tracking-tight">
                 Experience BioPod in Action
@@ -384,7 +384,7 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
               <button
                 id="hero-scroll-run-simulation-btn"
                 onClick={scrollToSim}
-                className="px-6 py-3 rounded-xl bg-[#69B82F] hover:bg-[#58A025] text-[#060A07] font-extrabold tracking-wider uppercase transition-all shadow-lg hover:shadow-green-900/40 flex items-center gap-2 cursor-pointer scale-100 hover:scale-105 active:scale-95"
+                className="px-6 py-3 rounded-xl bg-[#69B82F] hover:bg-[#58A025] text-[#060A07] font-extrabold tracking-wider uppercase transition-all shadow-lg hover:shadow-green-900/40 flex items-center gap-2 cursor-pointer scale-100 hover:scale-105 active:scale-95 text-xs sm:text-sm"
               >
                 <Sliders className="w-4 h-4" />
                 <span>Run Simulation</span>
@@ -394,7 +394,7 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
               <button
                 id="hero-scroll-principles-btn"
                 onClick={onOpenPrinciples}
-                className="px-4 py-3 rounded-xl bg-[#121A15] hover:bg-[#1B2920] border border-[#253D2C] text-[#FAF8F2] font-bold transition-all flex items-center gap-2 cursor-pointer"
+                className="px-4 py-3 rounded-xl bg-[#121A15] hover:bg-[#1B2920] border border-[#253D2C] text-[#FAF8F2] font-bold transition-all flex items-center gap-2 cursor-pointer text-xs sm:text-sm"
               >
                 <Layers className="w-4 h-4 text-[#69B82F]" />
                 <span>Principles & Science</span>
@@ -410,8 +410,8 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
           <motion.div
             style={{
               x: reducedMotion ? '0%' : hardwareX,
-              y: reducedMotion ? '85px' : hardwareY,
-              scale: reducedMotion ? 1.08 : hardwareScale,
+              y: reducedMotion ? '95px' : hardwareY,
+              scale: reducedMotion ? 1.02 : hardwareScale,
               rotateY: reducedMotion ? 0 : hardwareRotateY,
               rotateX: reducedMotion ? 0 : hardwareRotateX,
               transformPerspective: 1200,
@@ -420,13 +420,13 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
           >
             {/* PHYSICAL DEVICE HOUSING CONTAINER */}
             <div
-              className={`w-full rounded-3xl bg-gradient-to-b from-[#1A221E] via-[#121814] to-[#0A0E0B] border-2 p-4 sm:p-6 shadow-2xl relative overflow-hidden transition-all duration-700 ${
+              className={`w-full rounded-2xl sm:rounded-3xl bg-gradient-to-b from-[#1A221E] via-[#121814] to-[#0A0E0B] border-2 p-3.5 sm:p-5 shadow-2xl relative overflow-hidden transition-all duration-700 ${
                 activeStage === 1
-                  ? 'border-[#69B82F]/70 shadow-[0_0_45px_rgba(105,184,47,0.25)]'
+                  ? 'border-[#69B82F]/70 shadow-[0_0_40px_rgba(105,184,47,0.25)]'
                   : activeStage === 2
-                  ? 'border-[#42B9D9]/70 shadow-[0_0_45px_rgba(66,185,217,0.25)]'
+                  ? 'border-[#42B9D9]/70 shadow-[0_0_40px_rgba(66,185,217,0.25)]'
                   : activeStage === 3
-                  ? 'border-[#E4B83D]/70 shadow-[0_0_45px_rgba(228,184,61,0.2)]'
+                  ? 'border-[#E4B83D]/70 shadow-[0_0_40px_rgba(228,184,61,0.2)]'
                   : 'border-[#2F3C33] shadow-[0_25px_60px_rgba(0,0,0,0.88)]'
               }`}
             >
@@ -434,15 +434,15 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
               <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-transparent via-[#69B82F]/60 to-transparent" />
 
               {/* ---------------- 1. TOP VENTILATION & SENSOR HOUSING ---------------- */}
-              <div className="bg-[#101612] rounded-2xl border border-[#26332A] p-2.5 mb-3 flex items-center justify-between shadow-inner">
+              <div className="bg-[#101612] rounded-xl border border-[#26332A] p-2.5 mb-3 flex items-center justify-between shadow-inner">
                 {/* Left Fan Port */}
                 <div className="flex items-center gap-2">
-                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#080B09] border border-[#2B3B30] flex items-center justify-center relative overflow-hidden shadow-inner">
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#080B09] border border-[#2B3B30] flex items-center justify-center relative overflow-hidden shadow-inner">
                     <div 
-                      className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-dashed border-[#42B9D9]/80"
+                      className="w-6 h-6 sm:w-7 sm:h-7 rounded-full border-2 border-dashed border-[#42B9D9]/80"
                       style={{ animation: `spin-fan ${fanRotationDuration} linear infinite` }}
                     />
-                    <div className="absolute w-2.5 h-2.5 rounded-full bg-[#1F2A23]" />
+                    <div className="absolute w-2 h-2 rounded-full bg-[#1F2A23]" />
                   </div>
                   <span className="text-[10px] font-mono text-[#8C9A8F] hidden sm:inline font-semibold">
                     INTAKE A
@@ -450,12 +450,12 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
                 </div>
 
                 {/* Center Touch Display */}
-                <div className="px-3.5 py-1.5 rounded-xl bg-[#060907] border border-[#1E2B21] flex flex-col items-center">
+                <div className="px-3 py-1.5 rounded-lg bg-[#060907] border border-[#1E2B21] flex flex-col items-center">
                   <div className="flex items-center gap-1.5">
                     <span className="text-xs font-mono font-bold text-[#69B82F] tracking-wider">
                       BioPod
                     </span>
-                    <span className="text-[9px] text-[#A8DDA2]/70 font-mono">
+                    <span className="text-[9px] text-[#A8DDA2]/70 font-mono hidden sm:inline">
                       Pure by Nature • Smart by Design
                     </span>
                   </div>
@@ -473,25 +473,25 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
                   <span className="text-[10px] font-mono text-[#8C9A8F] hidden sm:inline font-semibold">
                     INTAKE B
                   </span>
-                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#080B09] border border-[#2B3B30] flex items-center justify-center relative overflow-hidden shadow-inner">
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#080B09] border border-[#2B3B30] flex items-center justify-center relative overflow-hidden shadow-inner">
                     <div 
-                      className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-dashed border-[#42B9D9]/80"
+                      className="w-6 h-6 sm:w-7 sm:h-7 rounded-full border-2 border-dashed border-[#42B9D9]/80"
                       style={{ animation: `spin-fan ${fanRotationDuration} linear infinite` }}
                     />
-                    <div className="absolute w-2.5 h-2.5 rounded-full bg-[#1F2A23]" />
+                    <div className="absolute w-2 h-2 rounded-full bg-[#1F2A23]" />
                   </div>
                 </div>
               </div>
 
               {/* ---------------- 2. CENTER CHAMBERS (PRE-FILTER + HEPA + DUAL ALGAE BIOREACTORS) ---------------- */}
-              <div className="relative bg-[#060907] rounded-2xl border border-[#1E2B21] p-3 sm:p-4 grid grid-cols-12 gap-3 items-center min-h-[270px] sm:min-h-[300px] overflow-hidden">
+              <div className="relative bg-[#060907] rounded-xl sm:rounded-2xl border border-[#1E2B21] p-3 sm:p-3.5 grid grid-cols-12 gap-3 items-center min-h-[250px] sm:min-h-[275px] overflow-hidden">
                 
                 {/* 1. Pre-Filter Grid */}
                 <div className="col-span-3 flex flex-col items-center justify-center h-full space-y-1.5">
                   <div className="text-[9px] font-mono text-[#A8DDA2] uppercase text-center font-bold">
                     1. PRE-FILTER
                   </div>
-                  <div className="w-full h-44 sm:h-48 rounded-xl bg-[#141A16] border border-[#2B3B30] p-1.5 flex flex-col justify-between items-center relative overflow-hidden shadow-inner">
+                  <div className="w-full h-40 sm:h-44 rounded-xl bg-[#141A16] border border-[#2B3B30] p-1.5 flex flex-col justify-between items-center relative overflow-hidden shadow-inner">
                     <div className="absolute inset-0 opacity-40 bg-[radial-gradient(#8C9A8F_1px,transparent_1px)] [background-size:5px_5px]" />
                     <span className="text-[8px] font-mono text-[#8C9A8F] z-10">Mesh Grid</span>
                     <div className="z-10 text-center">
@@ -504,7 +504,7 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
 
                 {/* 2. HEPA H13 Core */}
                 <div
-                  className={`col-span-4 flex flex-col items-center justify-center h-full space-y-1.5 relative rounded-2xl p-0.5 transition-all duration-500 ${
+                  className={`col-span-4 flex flex-col items-center justify-center h-full space-y-1.5 relative rounded-xl p-0.5 transition-all duration-500 ${
                     activeStage === 2 ? 'ring-2 ring-[#42B9D9] bg-[#42B9D9]/10' : ''
                   }`}
                 >
@@ -512,7 +512,7 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
                     <ShieldCheck className="w-3 h-3" /> 2. HEPA H13
                   </div>
 
-                  <div className="w-full h-44 sm:h-48 rounded-xl bg-[#0C1E26] border-2 border-[#1E5669] p-1.5 flex flex-col justify-between items-center relative overflow-hidden shadow-lg">
+                  <div className="w-full h-40 sm:h-44 rounded-xl bg-[#0C1E26] border-2 border-[#1E5669] p-1.5 flex flex-col justify-between items-center relative overflow-hidden shadow-lg">
                     {/* Vertical pleat lines */}
                     <div className="absolute inset-0 opacity-70 flex justify-around">
                       {Array.from({ length: 11 }).map((_, i) => (
@@ -541,7 +541,7 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
 
                 {/* 3. Dual Algae Photobioreactors */}
                 <div
-                  className={`col-span-5 flex flex-col items-center justify-center h-full space-y-1.5 rounded-2xl p-0.5 transition-all duration-500 ${
+                  className={`col-span-5 flex flex-col items-center justify-center h-full space-y-1.5 rounded-xl p-0.5 transition-all duration-500 ${
                     activeStage === 1 ? 'ring-2 ring-[#69B82F] bg-[#69B82F]/10' : ''
                   }`}
                 >
@@ -554,10 +554,10 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
                     <div
                       id="scroll-hero-cylinder-01"
                       onClick={() => onSelectTank('01')}
-                      title="Inspect Chamber 01"
-                      className="h-44 sm:h-48 rounded-xl bg-gradient-to-b from-[#092B15] via-[#0E3D1E] to-[#061F0E] border-2 border-[#1E5C33] hover:border-[#69B82F] transition-all p-1.5 flex flex-col justify-between items-center relative overflow-hidden cursor-pointer group shadow-lg"
+                      title="Chamber 01"
+                      className="h-40 sm:h-44 rounded-xl bg-gradient-to-b from-[#092B15] via-[#0E3D1E] to-[#061F0E] border-2 border-[#1E5C33] hover:border-[#69B82F] transition-all p-1.5 flex flex-col justify-between items-center relative overflow-hidden cursor-pointer group shadow-lg"
                       style={{
-                        boxShadow: `0 0 24px rgba(105, 184, 47, ${Math.max(0.3, ledGlow * 0.6)})`,
+                        boxShadow: `0 0 22px rgba(105, 184, 47, ${Math.max(0.3, ledGlow * 0.55)})`,
                       }}
                     >
                       <div className="absolute inset-0 bg-gradient-to-t from-[#69B82F]/35 via-transparent to-[#69B82F]/20 animate-pulse" />
@@ -577,7 +577,7 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
                         <span className="text-xs sm:text-sm font-mono font-extrabold text-white block">
                           {currentPoint.algaeDensity}%
                         </span>
-                        <span className="text-[7px] font-mono text-[#A8DDA2]/80">
+                        <span className="text-[8px] font-mono text-[#A8DDA2]/80">
                           Chlorella
                         </span>
                       </div>
@@ -588,9 +588,9 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
                       id="scroll-hero-cylinder-02"
                       onClick={() => onSelectTank('02')}
                       title="Chamber 02"
-                      className="h-44 sm:h-48 rounded-xl bg-gradient-to-b from-[#092B15] via-[#0E3D1E] to-[#061F0E] border-2 border-[#1E5C33] hover:border-[#69B82F] transition-all p-1.5 flex flex-col justify-between items-center relative overflow-hidden cursor-pointer group shadow-lg"
+                      className="h-40 sm:h-44 rounded-xl bg-gradient-to-b from-[#092B15] via-[#0E3D1E] to-[#061F0E] border-2 border-[#1E5C33] hover:border-[#69B82F] transition-all p-1.5 flex flex-col justify-between items-center relative overflow-hidden cursor-pointer group shadow-lg"
                       style={{
-                        boxShadow: `0 0 24px rgba(105, 184, 47, ${Math.max(0.3, ledGlow * 0.6)})`,
+                        boxShadow: `0 0 22px rgba(105, 184, 47, ${Math.max(0.3, ledGlow * 0.55)})`,
                       }}
                     >
                       <div className="absolute inset-0 bg-gradient-to-t from-[#69B82F]/35 via-transparent to-[#69B82F]/20 animate-pulse" />
@@ -610,7 +610,7 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
                         <span className="text-xs sm:text-sm font-mono font-extrabold text-white block">
                           {currentPoint.algaeDensity}%
                         </span>
-                        <span className="text-[7px] font-mono text-[#A8DDA2]/80">
+                        <span className="text-[8px] font-mono text-[#A8DDA2]/80">
                           Hydrogel
                         </span>
                       </div>
@@ -621,50 +621,50 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
 
               {/* ---------------- 3. BOTTOM OLED TELEMETRY SCREEN & POWER BUTTON ---------------- */}
               <div
-                className={`mt-3 bg-[#050806] rounded-2xl border-2 p-3 sm:p-3.5 grid grid-cols-5 gap-2 items-center font-mono shadow-inner transition-colors duration-500 ${
+                className={`mt-3 bg-[#050806] rounded-xl sm:rounded-2xl border-2 p-2.5 sm:p-3 grid grid-cols-5 gap-2 items-center font-mono shadow-inner transition-colors duration-500 ${
                   activeStage === 3 ? 'border-[#E4B83D]' : 'border-[#1E2B21]'
                 }`}
               >
                 {/* Telemetry 1: AQI */}
                 <div className="text-center">
-                  <span className="text-[9px] text-[#8C9A8F] block">AQI</span>
-                  <strong className="text-base sm:text-xl font-black text-[#69B82F] block leading-tight">
+                  <span className="text-[8px] sm:text-[9px] text-[#8C9A8F] block">AQI</span>
+                  <strong className="text-sm sm:text-lg font-black text-[#69B82F] block leading-tight">
                     {aqiData.aqi}
                   </strong>
-                  <span className="text-[8px] text-[#A8DDA2]/80 block uppercase font-semibold">
+                  <span className="text-[7px] sm:text-[8px] text-[#A8DDA2]/80 block uppercase font-semibold">
                     {aqiData.label}
                   </span>
                 </div>
 
                 {/* Telemetry 2: CO2 */}
                 <div className="text-center">
-                  <span className="text-[9px] text-[#8C9A8F] block">CO₂</span>
-                  <strong className="text-base sm:text-xl font-black text-[#69B82F] block leading-tight">
+                  <span className="text-[8px] sm:text-[9px] text-[#8C9A8F] block">CO₂</span>
+                  <strong className="text-sm sm:text-lg font-black text-[#69B82F] block leading-tight">
                     {currentPoint.roomCo2}
                   </strong>
-                  <span className="text-[9px] text-[#8C9A8F] block">
+                  <span className="text-[7px] sm:text-[8px] text-[#8C9A8F] block">
                     ppm
                   </span>
                 </div>
 
                 {/* Telemetry 3: TEMP */}
                 <div className="text-center">
-                  <span className="text-[9px] text-[#8C9A8F] block">TEMP</span>
-                  <strong className="text-base sm:text-xl font-black text-[#69B82F] block leading-tight">
+                  <span className="text-[8px] sm:text-[9px] text-[#8C9A8F] block">TEMP</span>
+                  <strong className="text-sm sm:text-lg font-black text-[#69B82F] block leading-tight">
                     {room.temperature.toFixed(1)}
                   </strong>
-                  <span className="text-[9px] text-[#8C9A8F] block">
+                  <span className="text-[7px] sm:text-[8px] text-[#8C9A8F] block">
                     °C
                   </span>
                 </div>
 
                 {/* Telemetry 4: HUMIDITY */}
                 <div className="text-center">
-                  <span className="text-[9px] text-[#8C9A8F] block">HUMIDITY</span>
-                  <strong className="text-base sm:text-xl font-black text-[#69B82F] block leading-tight">
+                  <span className="text-[8px] sm:text-[9px] text-[#8C9A8F] block">HUMIDITY</span>
+                  <strong className="text-sm sm:text-lg font-black text-[#69B82F] block leading-tight">
                     {room.humidity}
                   </strong>
-                  <span className="text-[9px] text-[#8C9A8F] block">
+                  <span className="text-[7px] sm:text-[8px] text-[#8C9A8F] block">
                     %
                   </span>
                 </div>
@@ -675,17 +675,16 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
                     id="scroll-hero-power-btn"
                     onClick={onTogglePower}
                     title={isSimulating ? 'Pause Hardware Simulation' : 'Power / Run Hardware Simulation'}
-                    className={`w-10 h-10 sm:w-11 sm:h-11 rounded-full border-2 flex items-center justify-center transition-all cursor-pointer shadow-md ${
+                    className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 flex items-center justify-center transition-all cursor-pointer shadow-md ${
                       isSimulating
                         ? 'bg-[#0B3A1A] border-[#69B82F] text-[#69B82F] shadow-green-900/50 scale-105'
                         : 'bg-[#121914] border-[#2C3E31] text-[#69B82F] hover:border-[#69B82F]'
                     }`}
                   >
-                    <Power className="w-4.5 h-4.5 animate-pulse" />
+                    <Power className="w-4 h-4 animate-pulse" />
                   </button>
                 </div>
               </div>
-
             </div>
           </motion.div>
         </div>
