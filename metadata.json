@@ -1,0 +1,6 @@
+{
+  "name": "BioPod Simulator",
+  "description": "Interactive industrial biotech air quality simulation platform modeling multi-stage filtration and algae photobioreactor carbon capture.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
