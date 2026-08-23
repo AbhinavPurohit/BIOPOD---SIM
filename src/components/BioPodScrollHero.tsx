@@ -53,7 +53,7 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
 
-  // Set up scrubbed scroll progress across 360vh
+  // Set up scrubbed scroll progress across 540vh (50% more scroll depth for immersive slide reading)
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end end'],
@@ -101,13 +101,13 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
   const hardwareY = useTransform(
     smoothProgress,
     [0, 0.15, 0.28, 0.42, 0.52, 0.66, 0.74, 0.86, 1.0],
-    ['95px', '95px', '20px', '20px', '20px', '20px', '-35px', '-25px', '-25px']
+    ['155px', '155px', '20px', '20px', '20px', '20px', '-35px', '-25px', '-25px']
   );
 
   const hardwareScale = useTransform(
     smoothProgress,
     [0, 0.15, 0.28, 0.42, 0.52, 0.66, 0.74, 0.86, 1.0],
-    [1.02, 1.02, 1.08, 1.08, 1.08, 1.08, 1.00, 1.06, 1.06]
+    [0.98, 0.98, 1.08, 1.08, 1.08, 1.08, 1.00, 1.06, 1.06]
   );
 
   const hardwareRotateY = useTransform(
@@ -164,7 +164,7 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
     <div
       ref={containerRef}
       id="biopod-apple-scroll-experience"
-      className="relative w-full h-[360vh]"
+      className="relative w-full h-[540vh]"
     >
       {/* Pinned Sticky Viewport (100vh) */}
       <div className="sticky top-0 w-full h-screen overflow-hidden flex flex-col justify-between items-center z-10 select-none">
@@ -201,29 +201,37 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
             y: reducedMotion ? 0 : heroTextY,
             pointerEvents: activeStage === 0 ? 'auto' : 'none',
           }}
-          className="absolute top-0 inset-x-0 z-20 flex flex-col items-center pt-4 sm:pt-5 px-4 text-center max-w-2xl mx-auto"
+          className="absolute top-0 inset-x-0 z-20 flex flex-col items-center pt-5 sm:pt-7 md:pt-8 px-4 text-center max-w-3xl mx-auto"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0B3A1A]/85 border border-[#1E5C33] text-[#69B82F] text-[11px] font-mono font-bold tracking-wider uppercase mb-1 shadow-md backdrop-blur-md">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#69B82F] animate-pulse" />
+          {/* Top Pill / Badge */}
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#0B3A1A]/90 border border-[#1E5C33] text-[#69B82F] text-xs sm:text-sm font-mono font-bold tracking-widest uppercase mb-2 shadow-lg backdrop-blur-md">
+            <span className="w-2 h-2 rounded-full bg-[#69B82F] animate-pulse shadow-[0_0_8px_#69B82F]" />
             V2.4 BIO-REACTIVE AIR PURIFIER
           </div>
 
-          <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-[#FAF8F2] uppercase font-sans">
+          {/* Main Brand Title */}
+          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight text-[#FAF8F2] uppercase font-sans leading-none drop-shadow-md">
             BIOPOD
           </h1>
 
-          <p className="mt-0.5 text-base sm:text-lg font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#FAF8F2] via-[#FAF8F2] to-[#69B82F]">
+          {/* Tagline */}
+          <p className="mt-2 text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#FAF8F2] via-[#E8F5E6] to-[#69B82F]">
             Breathe Better. Think Sharper.
           </p>
 
-          <p className="mt-1 max-w-md text-xs sm:text-sm text-[#A0B2A5] font-sans font-normal leading-relaxed">
+          {/* Subtext */}
+          <p className="mt-2 max-w-xl text-sm sm:text-base md:text-lg text-[#A6B8AC] font-sans font-normal leading-relaxed">
             Living microalgae carbon sequestration combined with medical-grade True HEPA H13 filtration.
           </p>
 
-          <div className="mt-2 inline-flex items-center gap-1.5 text-[11px] font-mono text-[#8C9A8F] bg-[#0A120D]/60 px-3 py-1 rounded-full border border-[#1E2E22]">
-            <ChevronDown className="w-3.5 h-3.5 text-[#69B82F] animate-bounce" />
+          {/* Scroll Down Prompt */}
+          <button
+            onClick={scrollToSim}
+            className="mt-3.5 inline-flex items-center gap-2 text-xs sm:text-sm font-mono font-semibold text-[#A8DDA2] hover:text-[#FAF8F2] bg-[#0A140E]/85 hover:bg-[#112417] px-4 sm:px-5 py-1.5 rounded-full border border-[#1E3F27] transition-all cursor-pointer shadow-md backdrop-blur-sm group"
+          >
+            <ChevronDown className="w-4 h-4 text-[#69B82F] group-hover:translate-y-0.5 transition-transform" />
             <span>Scroll down to inspect architecture</span>
-          </div>
+          </button>
         </motion.div>
 
         {/* ========================================================================= */}
@@ -235,7 +243,7 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
             x: reducedMotion ? 0 : algaeX,
             pointerEvents: activeStage === 1 ? 'auto' : 'none',
           }}
-          className="absolute left-4 sm:left-8 lg:left-12 top-1/2 -translate-y-1/2 z-20 max-w-md xl:max-w-lg"
+          className="absolute left-4 sm:left-8 lg:left-14 xl:left-28 2xl:left-[14%] top-1/2 -translate-y-1/2 z-20 max-w-md xl:max-w-lg"
         >
           <div className="space-y-3.5 bg-[#090F0C]/92 border border-[#1E3F27] p-5 sm:p-6 rounded-2xl sm:rounded-3xl backdrop-blur-xl shadow-2xl">
             <div className="flex items-center gap-2 text-xs font-mono text-[#69B82F] uppercase tracking-widest font-bold">
@@ -278,7 +286,7 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
             x: reducedMotion ? 0 : hepaX,
             pointerEvents: activeStage === 2 ? 'auto' : 'none',
           }}
-          className="absolute right-4 sm:right-8 lg:left-auto lg:right-12 top-1/2 -translate-y-1/2 z-20 max-w-md xl:max-w-lg"
+          className="absolute right-4 sm:right-8 lg:left-auto lg:right-14 xl:right-28 2xl:right-[14%] top-1/2 -translate-y-1/2 z-20 max-w-md xl:max-w-lg"
         >
           <div className="space-y-3.5 bg-[#070D12]/92 border border-[#173847] p-5 sm:p-6 rounded-2xl sm:rounded-3xl backdrop-blur-xl shadow-2xl">
             <div className="flex items-center gap-2 text-xs font-mono text-[#42B9D9] uppercase tracking-widest font-bold">
@@ -410,8 +418,8 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
           <motion.div
             style={{
               x: reducedMotion ? '0%' : hardwareX,
-              y: reducedMotion ? '95px' : hardwareY,
-              scale: reducedMotion ? 1.02 : hardwareScale,
+              y: reducedMotion ? '155px' : hardwareY,
+              scale: reducedMotion ? 0.98 : hardwareScale,
               rotateY: reducedMotion ? 0 : hardwareRotateY,
               rotateX: reducedMotion ? 0 : hardwareRotateX,
               transformPerspective: 1200,
@@ -444,22 +452,22 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
                     />
                     <div className="absolute w-2 h-2 rounded-full bg-[#1F2A23]" />
                   </div>
-                  <span className="text-[10px] font-mono text-[#8C9A8F] hidden sm:inline font-semibold">
+                  <span className="text-xs sm:text-sm font-mono text-[#8C9A8F] hidden sm:inline font-bold">
                     INTAKE A
                   </span>
                 </div>
 
                 {/* Center Touch Display */}
-                <div className="px-3 py-1.5 rounded-lg bg-[#060907] border border-[#1E2B21] flex flex-col items-center">
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-xs font-mono font-bold text-[#69B82F] tracking-wider">
+                <div className="px-3.5 py-2 rounded-lg bg-[#060907] border border-[#1E2B21] flex flex-col items-center">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm sm:text-base font-mono font-black text-[#69B82F] tracking-wider">
                       BioPod
                     </span>
-                    <span className="text-[9px] text-[#A8DDA2]/70 font-mono hidden sm:inline">
+                    <span className="text-xs text-[#A8DDA2]/80 font-mono hidden sm:inline">
                       Pure by Nature • Smart by Design
                     </span>
                   </div>
-                  <div className="flex items-center gap-2 mt-0.5 text-[#69B82F] text-[10px] font-mono font-medium">
+                  <div className="flex items-center gap-2.5 mt-0.5 text-[#69B82F] text-xs font-mono font-bold">
                     <span>💨 {effectiveFanSpeed}%</span>
                     <span>•</span>
                     <span>🌿 Bio-Mode</span>
@@ -470,7 +478,7 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
 
                 {/* Right Fan Port */}
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-mono text-[#8C9A8F] hidden sm:inline font-semibold">
+                  <span className="text-xs sm:text-sm font-mono text-[#8C9A8F] hidden sm:inline font-bold">
                     INTAKE B
                   </span>
                   <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#080B09] border border-[#2B3B30] flex items-center justify-center relative overflow-hidden shadow-inner">
@@ -488,17 +496,17 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
                 
                 {/* 1. Pre-Filter Grid */}
                 <div className="col-span-3 flex flex-col items-center justify-center h-full space-y-1.5">
-                  <div className="text-[9px] font-mono text-[#A8DDA2] uppercase text-center font-bold">
+                  <div className="text-xs sm:text-sm font-mono text-[#A8DDA2] uppercase text-center font-bold tracking-wider">
                     1. PRE-FILTER
                   </div>
-                  <div className="w-full h-40 sm:h-44 rounded-xl bg-[#141A16] border border-[#2B3B30] p-1.5 flex flex-col justify-between items-center relative overflow-hidden shadow-inner">
+                  <div className="w-full h-40 sm:h-44 rounded-xl bg-[#141A16] border border-[#2B3B30] p-2 flex flex-col justify-between items-center relative overflow-hidden shadow-inner">
                     <div className="absolute inset-0 opacity-40 bg-[radial-gradient(#8C9A8F_1px,transparent_1px)] [background-size:5px_5px]" />
-                    <span className="text-[8px] font-mono text-[#8C9A8F] z-10">Mesh Grid</span>
+                    <span className="text-[11px] sm:text-xs font-mono text-[#A0B0A5] z-10 font-semibold">Mesh Grid</span>
                     <div className="z-10 text-center">
-                      <span className="text-[9px] font-mono text-[#E4B83D] block font-bold">COARSE</span>
-                      <span className="text-[8px] text-[#8C9A8F]">&gt;10µm Dust</span>
+                      <span className="text-sm sm:text-base font-mono text-[#E4B83D] block font-black tracking-wide">COARSE</span>
+                      <span className="text-[11px] sm:text-xs text-[#A0B0A5] font-mono font-medium">&gt;10µm Dust</span>
                     </div>
-                    <span className="text-[8px] font-mono text-[#69B82F] z-10 font-bold">94% Active</span>
+                    <span className="text-[11px] sm:text-xs font-mono text-[#69B82F] z-10 font-bold">94% Active</span>
                   </div>
                 </div>
 
@@ -508,11 +516,11 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
                     activeStage === 2 ? 'ring-2 ring-[#42B9D9] bg-[#42B9D9]/10' : ''
                   }`}
                 >
-                  <div className="text-[9px] font-mono text-[#42B9D9] uppercase text-center font-bold flex items-center gap-1">
-                    <ShieldCheck className="w-3 h-3" /> 2. HEPA H13
+                  <div className="text-xs sm:text-sm font-mono text-[#42B9D9] uppercase text-center font-bold flex items-center gap-1.5 tracking-wider">
+                    <ShieldCheck className="w-3.5 h-3.5" /> 2. HEPA H13
                   </div>
 
-                  <div className="w-full h-40 sm:h-44 rounded-xl bg-[#0C1E26] border-2 border-[#1E5669] p-1.5 flex flex-col justify-between items-center relative overflow-hidden shadow-lg">
+                  <div className="w-full h-40 sm:h-44 rounded-xl bg-[#0C1E26] border-2 border-[#1E5669] p-2 flex flex-col justify-between items-center relative overflow-hidden shadow-lg">
                     {/* Vertical pleat lines */}
                     <div className="absolute inset-0 opacity-70 flex justify-around">
                       {Array.from({ length: 11 }).map((_, i) => (
@@ -530,10 +538,10 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
                       <div className="w-full h-3 bg-gradient-to-r from-[#42B9D9]/20 via-[#42B9D9]/90 to-[#69B82F]/70 blur-xs animate-pulse" />
                     </div>
 
-                    <span className="text-[8px] font-mono text-[#42B9D9] font-bold z-10 bg-[#06141A]/80 px-1.5 py-0.5 rounded">
+                    <span className="text-xs sm:text-sm font-mono text-[#42B9D9] font-black z-10 bg-[#06141A]/90 px-2 py-1 rounded tracking-wide shadow-sm">
                       99.97% Capture
                     </span>
-                    <span className="text-[8px] font-mono text-[#FAF8F2] z-10 bg-[#06141A]/90 px-1.5 py-0.5 rounded font-bold">
+                    <span className="text-xs sm:text-sm font-mono text-[#FAF8F2] z-10 bg-[#06141A]/95 px-2 py-1 rounded font-black tracking-wide shadow-sm">
                       Aerosol Trapped
                     </span>
                   </div>
@@ -545,8 +553,8 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
                     activeStage === 1 ? 'ring-2 ring-[#69B82F] bg-[#69B82F]/10' : ''
                   }`}
                 >
-                  <div className="text-[9px] font-mono text-[#69B82F] uppercase text-center font-bold flex items-center gap-1">
-                    <Sparkles className="w-3 h-3 text-[#69B82F]" /> 3. DUAL BIOREACTORS
+                  <div className="text-xs sm:text-sm font-mono text-[#69B82F] uppercase text-center font-bold flex items-center gap-1.5 tracking-wider">
+                    <Sparkles className="w-3.5 h-3.5 text-[#69B82F]" /> 3. DUAL BIOREACTORS
                   </div>
 
                   <div className="grid grid-cols-2 gap-2 w-full">
@@ -555,7 +563,7 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
                       id="scroll-hero-cylinder-01"
                       onClick={() => onSelectTank('01')}
                       title="Chamber 01"
-                      className="h-40 sm:h-44 rounded-xl bg-gradient-to-b from-[#092B15] via-[#0E3D1E] to-[#061F0E] border-2 border-[#1E5C33] hover:border-[#69B82F] transition-all p-1.5 flex flex-col justify-between items-center relative overflow-hidden cursor-pointer group shadow-lg"
+                      className="h-40 sm:h-44 rounded-xl bg-gradient-to-b from-[#092B15] via-[#0E3D1E] to-[#061F0E] border-2 border-[#1E5C33] hover:border-[#69B82F] transition-all p-2 flex flex-col justify-between items-center relative overflow-hidden cursor-pointer group shadow-lg"
                       style={{
                         boxShadow: `0 0 22px rgba(105, 184, 47, ${Math.max(0.3, ledGlow * 0.55)})`,
                       }}
@@ -570,14 +578,14 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
                         </div>
                       )}
 
-                      <span className="text-[8px] font-mono text-[#A8DDA2] font-bold z-10">
+                      <span className="text-[11px] sm:text-xs font-mono text-[#A8DDA2] font-extrabold z-10 tracking-wider">
                         TANK 01
                       </span>
                       <div className="z-10 text-center">
-                        <span className="text-xs sm:text-sm font-mono font-extrabold text-white block">
+                        <span className="text-base sm:text-xl font-mono font-black text-white block tracking-tight">
                           {currentPoint.algaeDensity}%
                         </span>
-                        <span className="text-[8px] font-mono text-[#A8DDA2]/80">
+                        <span className="text-xs sm:text-[13px] font-mono text-[#C4E8BE] font-bold">
                           Chlorella
                         </span>
                       </div>
@@ -588,7 +596,7 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
                       id="scroll-hero-cylinder-02"
                       onClick={() => onSelectTank('02')}
                       title="Chamber 02"
-                      className="h-40 sm:h-44 rounded-xl bg-gradient-to-b from-[#092B15] via-[#0E3D1E] to-[#061F0E] border-2 border-[#1E5C33] hover:border-[#69B82F] transition-all p-1.5 flex flex-col justify-between items-center relative overflow-hidden cursor-pointer group shadow-lg"
+                      className="h-40 sm:h-44 rounded-xl bg-gradient-to-b from-[#092B15] via-[#0E3D1E] to-[#061F0E] border-2 border-[#1E5C33] hover:border-[#69B82F] transition-all p-2 flex flex-col justify-between items-center relative overflow-hidden cursor-pointer group shadow-lg"
                       style={{
                         boxShadow: `0 0 22px rgba(105, 184, 47, ${Math.max(0.3, ledGlow * 0.55)})`,
                       }}
@@ -603,14 +611,14 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
                         </div>
                       )}
 
-                      <span className="text-[8px] font-mono text-[#A8DDA2] font-bold z-10">
+                      <span className="text-[11px] sm:text-xs font-mono text-[#A8DDA2] font-extrabold z-10 tracking-wider">
                         TANK 02
                       </span>
                       <div className="z-10 text-center">
-                        <span className="text-xs sm:text-sm font-mono font-extrabold text-white block">
+                        <span className="text-base sm:text-xl font-mono font-black text-white block tracking-tight">
                           {currentPoint.algaeDensity}%
                         </span>
-                        <span className="text-[8px] font-mono text-[#A8DDA2]/80">
+                        <span className="text-xs sm:text-[13px] font-mono text-[#C4E8BE] font-bold">
                           Hydrogel
                         </span>
                       </div>
@@ -621,50 +629,50 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
 
               {/* ---------------- 3. BOTTOM OLED TELEMETRY SCREEN & POWER BUTTON ---------------- */}
               <div
-                className={`mt-3 bg-[#050806] rounded-xl sm:rounded-2xl border-2 p-2.5 sm:p-3 grid grid-cols-5 gap-2 items-center font-mono shadow-inner transition-colors duration-500 ${
+                className={`mt-3 bg-[#050806] rounded-xl sm:rounded-2xl border-2 p-2.5 sm:p-3.5 grid grid-cols-5 gap-2 items-center font-mono shadow-inner transition-colors duration-500 ${
                   activeStage === 3 ? 'border-[#E4B83D]' : 'border-[#1E2B21]'
                 }`}
               >
                 {/* Telemetry 1: AQI */}
                 <div className="text-center">
-                  <span className="text-[8px] sm:text-[9px] text-[#8C9A8F] block">AQI</span>
-                  <strong className="text-sm sm:text-lg font-black text-[#69B82F] block leading-tight">
+                  <span className="text-[11px] sm:text-xs text-[#8C9A8F] block font-bold">AQI</span>
+                  <strong className="text-base sm:text-2xl font-black text-[#69B82F] block leading-tight">
                     {aqiData.aqi}
                   </strong>
-                  <span className="text-[7px] sm:text-[8px] text-[#A8DDA2]/80 block uppercase font-semibold">
+                  <span className="text-[9px] sm:text-[11px] text-[#A8DDA2] block uppercase font-bold">
                     {aqiData.label}
                   </span>
                 </div>
 
                 {/* Telemetry 2: CO2 */}
                 <div className="text-center">
-                  <span className="text-[8px] sm:text-[9px] text-[#8C9A8F] block">CO₂</span>
-                  <strong className="text-sm sm:text-lg font-black text-[#69B82F] block leading-tight">
+                  <span className="text-[11px] sm:text-xs text-[#8C9A8F] block font-bold">CO₂</span>
+                  <strong className="text-base sm:text-2xl font-black text-[#69B82F] block leading-tight">
                     {currentPoint.roomCo2}
                   </strong>
-                  <span className="text-[7px] sm:text-[8px] text-[#8C9A8F] block">
+                  <span className="text-[10px] sm:text-xs text-[#8C9A8F] block font-semibold">
                     ppm
                   </span>
                 </div>
 
                 {/* Telemetry 3: TEMP */}
                 <div className="text-center">
-                  <span className="text-[8px] sm:text-[9px] text-[#8C9A8F] block">TEMP</span>
-                  <strong className="text-sm sm:text-lg font-black text-[#69B82F] block leading-tight">
+                  <span className="text-[11px] sm:text-xs text-[#8C9A8F] block font-bold">TEMP</span>
+                  <strong className="text-base sm:text-2xl font-black text-[#69B82F] block leading-tight">
                     {room.temperature.toFixed(1)}
                   </strong>
-                  <span className="text-[7px] sm:text-[8px] text-[#8C9A8F] block">
+                  <span className="text-[10px] sm:text-xs text-[#8C9A8F] block font-semibold">
                     °C
                   </span>
                 </div>
 
                 {/* Telemetry 4: HUMIDITY */}
                 <div className="text-center">
-                  <span className="text-[8px] sm:text-[9px] text-[#8C9A8F] block">HUMIDITY</span>
-                  <strong className="text-sm sm:text-lg font-black text-[#69B82F] block leading-tight">
+                  <span className="text-[11px] sm:text-xs text-[#8C9A8F] block font-bold">HUMIDITY</span>
+                  <strong className="text-base sm:text-2xl font-black text-[#69B82F] block leading-tight">
                     {room.humidity}
                   </strong>
-                  <span className="text-[7px] sm:text-[8px] text-[#8C9A8F] block">
+                  <span className="text-[10px] sm:text-xs text-[#8C9A8F] block font-semibold">
                     %
                   </span>
                 </div>

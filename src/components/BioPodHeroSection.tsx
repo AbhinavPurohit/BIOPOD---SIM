@@ -277,32 +277,31 @@ export const BioPodHeroSection: React.FC<BioPodHeroSectionProps> = ({
 
               {/* ---------------- 2. CENTER CHAMBERS (PRE-FILTER + HEPA + LUMINOUS BLUE AIR RAYS + DUAL ALGAE CYLINDERS) ---------------- */}
               <div className="relative bg-[#060907] rounded-xl border border-[#1E2B21] p-3.5 sm:p-4 grid grid-cols-12 gap-3 items-center min-h-[280px] overflow-hidden">
-                
                 {/* Visual Air Intake & Pre-Filter (Left 3 cols) */}
                 <div className="col-span-3 flex flex-col items-center justify-center h-full space-y-2">
-                  <div className="text-[9px] font-mono text-[#A8DDA2] uppercase text-center font-semibold">
+                  <div className="text-xs sm:text-sm font-mono text-[#A8DDA2] uppercase text-center font-bold tracking-wider">
                     1. PRE-FILTER
                   </div>
-                  <div className="w-full h-44 rounded-lg bg-[#141A16] border border-[#2B3B30] p-1.5 flex flex-col justify-between items-center relative overflow-hidden shadow-inner">
+                  <div className="w-full h-44 rounded-lg bg-[#141A16] border border-[#2B3B30] p-2 flex flex-col justify-between items-center relative overflow-hidden shadow-inner">
                     {/* Mesh texture */}
                     <div className="absolute inset-0 opacity-40 bg-[radial-gradient(#8C9A8F_1px,transparent_1px)] [background-size:6px_6px]"></div>
-                    <span className="text-[8px] font-mono text-[#8C9A8F] z-10">Mesh Grid</span>
+                    <span className="text-[11px] sm:text-xs font-mono text-[#A0B0A5] z-10 font-semibold">Mesh Grid</span>
                     <div className="z-10 text-center">
-                      <span className="text-[9px] font-mono text-[#E4B83D] block font-bold">COARSE</span>
-                      <span className="text-[8px] text-[#8C9A8F]">&gt;10µm Dust</span>
+                      <span className="text-sm sm:text-base font-mono text-[#E4B83D] block font-black tracking-wide">COARSE</span>
+                      <span className="text-[11px] sm:text-xs text-[#A0B0A5] font-mono font-medium">&gt;10µm Dust</span>
                     </div>
-                    <span className="text-[8px] font-mono text-[#69B82F] z-10">94% Active</span>
+                    <span className="text-[11px] sm:text-xs font-mono text-[#69B82F] z-10 font-bold">94% Active</span>
                   </div>
                 </div>
 
                 {/* HEPA Filter Pleats with Clean Air Laminar Flow Stream (Center 4 cols) */}
                 <div className="col-span-4 flex flex-col items-center justify-center h-full space-y-2 relative">
-                  <div className="text-[9px] font-mono text-[#42B9D9] uppercase text-center font-semibold flex items-center gap-1">
-                    <ShieldCheck className="w-3 h-3" /> 2. HEPA H13
+                  <div className="text-xs sm:text-sm font-mono text-[#42B9D9] uppercase text-center font-bold flex items-center gap-1.5 tracking-wider">
+                    <ShieldCheck className="w-3.5 h-3.5" /> 2. HEPA H13
                   </div>
 
                   {/* Pleated Filter Core */}
-                  <div className="w-full h-44 rounded-lg bg-[#0C1E26] border-2 border-[#1E5669] p-1.5 flex flex-col justify-between items-center relative overflow-hidden shadow-lg">
+                  <div className="w-full h-44 rounded-lg bg-[#0C1E26] border-2 border-[#1E5669] p-2 flex flex-col justify-between items-center relative overflow-hidden shadow-lg">
                     {/* Vertical pleat lines */}
                     <div className="absolute inset-0 opacity-70 flex justify-around">
                       {Array.from({ length: 12 }).map((_, i) => (
@@ -317,10 +316,10 @@ export const BioPodHeroSection: React.FC<BioPodHeroSectionProps> = ({
                       <div className="w-full h-3 bg-gradient-to-r from-[#42B9D9]/20 via-[#42B9D9]/90 to-[#69B82F]/70 blur-xs animate-pulse"></div>
                     </div>
 
-                    <span className="text-[8px] font-mono text-[#42B9D9] font-bold z-10 bg-[#06141A]/80 px-1 rounded">
+                    <span className="text-xs sm:text-sm font-mono text-[#42B9D9] font-black z-10 bg-[#06141A]/90 px-2 py-1 rounded tracking-wide shadow-sm">
                       99.97% Capture
                     </span>
-                    <span className="text-[8px] font-mono text-[#FAF8F2] z-10 bg-[#06141A]/90 px-1.5 py-0.5 rounded font-bold">
+                    <span className="text-xs sm:text-sm font-mono text-[#FAF8F2] z-10 bg-[#06141A]/95 px-2 py-1 rounded font-black tracking-wide shadow-sm">
                       Aerosol Trapped
                     </span>
                   </div>
@@ -328,8 +327,8 @@ export const BioPodHeroSection: React.FC<BioPodHeroSectionProps> = ({
 
                 {/* Dual Algae Photobioreactor Glass Cylinders (Right 5 cols) */}
                 <div className="col-span-5 flex flex-col items-center justify-center h-full space-y-2">
-                  <div className="text-[9px] font-mono text-[#69B82F] uppercase text-center font-bold flex items-center gap-1">
-                    <Sparkles className="w-3 h-3 text-[#69B82F]" /> 3. DUAL BIOREACTORS
+                  <div className="text-xs sm:text-sm font-mono text-[#69B82F] uppercase text-center font-bold flex items-center gap-1.5 tracking-wider">
+                    <Sparkles className="w-3.5 h-3.5 text-[#69B82F]" /> 3. DUAL BIOREACTORS
                   </div>
 
                   {/* Dual Cylinders Container */}
@@ -339,7 +338,7 @@ export const BioPodHeroSection: React.FC<BioPodHeroSectionProps> = ({
                       id="hero-cylinder-01"
                       onClick={() => onSelectTank('01')}
                       title="Inspect Chamber 01"
-                      className="h-44 rounded-xl bg-gradient-to-b from-[#092B15] via-[#0E3D1E] to-[#061F0E] border-2 border-[#1E5C33] hover:border-[#69B82F] transition-all p-1.5 flex flex-col justify-between items-center relative overflow-hidden cursor-pointer group shadow-lg"
+                      className="h-44 rounded-xl bg-gradient-to-b from-[#092B15] via-[#0E3D1E] to-[#061F0E] border-2 border-[#1E5C33] hover:border-[#69B82F] transition-all p-2 flex flex-col justify-between items-center relative overflow-hidden cursor-pointer group shadow-lg"
                       style={{
                         boxShadow: `0 0 20px rgba(105, 184, 47, ${ledGlow * 0.45})`,
                       }}
@@ -356,18 +355,18 @@ export const BioPodHeroSection: React.FC<BioPodHeroSectionProps> = ({
                         </div>
                       )}
 
-                      <span className="text-[8px] font-mono text-[#A8DDA2] font-bold z-10">
+                      <span className="text-[11px] sm:text-xs font-mono text-[#A8DDA2] font-extrabold z-10 tracking-wider">
                         TANK 01
                       </span>
                       <div className="z-10 text-center">
-                        <span className="text-xs font-mono font-extrabold text-white block">
+                        <span className="text-base sm:text-xl font-mono font-black text-white block tracking-tight">
                           {currentPoint.algaeDensity}%
                         </span>
-                        <span className="text-[7px] font-mono text-[#A8DDA2]/80">
+                        <span className="text-xs sm:text-[13px] font-mono text-[#C4E8BE] font-bold">
                           Chlorella
                         </span>
                       </div>
-                      <span className="text-[7px] font-mono text-[#69B82F] z-10 group-hover:underline">
+                      <span className="text-[9px] sm:text-[10px] font-mono text-[#69B82F] z-10 font-bold group-hover:underline">
                         Inspect ↗
                       </span>
                     </div>
@@ -377,7 +376,7 @@ export const BioPodHeroSection: React.FC<BioPodHeroSectionProps> = ({
                       id="hero-cylinder-02"
                       onClick={() => onSelectTank('02')}
                       title="Inspect Chamber 02"
-                      className="h-44 rounded-xl bg-gradient-to-b from-[#092B15] via-[#0E3D1E] to-[#061F0E] border-2 border-[#1E5C33] hover:border-[#69B82F] transition-all p-1.5 flex flex-col justify-between items-center relative overflow-hidden cursor-pointer group shadow-lg"
+                      className="h-44 rounded-xl bg-gradient-to-b from-[#092B15] via-[#0E3D1E] to-[#061F0E] border-2 border-[#1E5C33] hover:border-[#69B82F] transition-all p-2 flex flex-col justify-between items-center relative overflow-hidden cursor-pointer group shadow-lg"
                       style={{
                         boxShadow: `0 0 20px rgba(105, 184, 47, ${ledGlow * 0.45})`,
                       }}
@@ -389,23 +388,23 @@ export const BioPodHeroSection: React.FC<BioPodHeroSectionProps> = ({
                       {controls.airPump && (
                         <div className="absolute inset-0 pointer-events-none overflow-hidden flex justify-around">
                           <div className="w-1.5 h-1.5 rounded-full bg-white/80 animate-bubble-fast" style={{ animationDelay: '0.2s' }}></div>
-                          <div className="w-1 h-1 rounded-full bg-white/90 animate-bubble-slow" style={{ animationDelay: '0.5s' }}></div>
-                          <div className="w-1 h-1 rounded-full bg-white/95 animate-bubble-fast" style={{ animationDelay: '0.8s' }}></div>
+                          <div className="w-1.5 h-1.5 rounded-full bg-white/90 animate-bubble-slow" style={{ animationDelay: '0.5s' }}></div>
+                          <div className="w-1.5 h-1.5 rounded-full bg-white/95 animate-bubble-fast" style={{ animationDelay: '0.8s' }}></div>
                         </div>
                       )}
 
-                      <span className="text-[8px] font-mono text-[#A8DDA2] font-bold z-10">
+                      <span className="text-[11px] sm:text-xs font-mono text-[#A8DDA2] font-extrabold z-10 tracking-wider">
                         TANK 02
                       </span>
                       <div className="z-10 text-center">
-                        <span className="text-xs font-mono font-extrabold text-white block">
+                        <span className="text-base sm:text-xl font-mono font-black text-white block tracking-tight">
                           {currentPoint.algaeDensity}%
                         </span>
-                        <span className="text-[7px] font-mono text-[#A8DDA2]/80">
+                        <span className="text-xs sm:text-[13px] font-mono text-[#C4E8BE] font-bold">
                           Hydrogel
                         </span>
                       </div>
-                      <span className="text-[7px] font-mono text-[#69B82F] z-10 group-hover:underline">
+                      <span className="text-[9px] sm:text-[10px] font-mono text-[#69B82F] z-10 font-bold group-hover:underline">
                         Inspect ↗
                       </span>
                     </div>
@@ -417,44 +416,44 @@ export const BioPodHeroSection: React.FC<BioPodHeroSectionProps> = ({
               <div className="mt-3 bg-[#050806] rounded-xl border-2 border-[#1E2B21] p-3 sm:p-4 grid grid-cols-5 gap-2 items-center font-mono shadow-inner">
                 {/* Telemetry 1: AQI */}
                 <div className="text-center">
-                  <span className="text-[9px] text-[#8C9A8F] block">AQI</span>
-                  <strong className="text-base sm:text-xl font-black text-[#69B82F] block leading-tight">
+                  <span className="text-[11px] sm:text-xs text-[#8C9A8F] block font-bold">AQI</span>
+                  <strong className="text-base sm:text-2xl font-black text-[#69B82F] block leading-tight">
                     {aqiData.aqi}
                   </strong>
-                  <span className="text-[9px] text-[#A8DDA2]/80 block uppercase">
+                  <span className="text-[9px] sm:text-[11px] text-[#A8DDA2] block uppercase font-bold">
                     {aqiData.label}
                   </span>
                 </div>
 
                 {/* Telemetry 2: CO2 */}
                 <div className="text-center">
-                  <span className="text-[9px] text-[#8C9A8F] block">CO₂</span>
-                  <strong className="text-base sm:text-xl font-black text-[#69B82F] block leading-tight">
+                  <span className="text-[11px] sm:text-xs text-[#8C9A8F] block font-bold">CO₂</span>
+                  <strong className="text-base sm:text-2xl font-black text-[#69B82F] block leading-tight">
                     {currentPoint.roomCo2}
                   </strong>
-                  <span className="text-[9px] text-[#8C9A8F] block">
+                  <span className="text-[10px] sm:text-xs text-[#8C9A8F] block font-semibold">
                     ppm
                   </span>
                 </div>
 
                 {/* Telemetry 3: TEMP */}
                 <div className="text-center">
-                  <span className="text-[9px] text-[#8C9A8F] block">TEMP</span>
-                  <strong className="text-base sm:text-xl font-black text-[#69B82F] block leading-tight">
+                  <span className="text-[11px] sm:text-xs text-[#8C9A8F] block font-bold">TEMP</span>
+                  <strong className="text-base sm:text-2xl font-black text-[#69B82F] block leading-tight">
                     {room.temperature.toFixed(1)}
                   </strong>
-                  <span className="text-[9px] text-[#8C9A8F] block">
+                  <span className="text-[10px] sm:text-xs text-[#8C9A8F] block font-semibold">
                     °C
                   </span>
                 </div>
 
                 {/* Telemetry 4: HUMIDITY */}
                 <div className="text-center">
-                  <span className="text-[9px] text-[#8C9A8F] block">HUMIDITY</span>
-                  <strong className="text-base sm:text-xl font-black text-[#69B82F] block leading-tight">
+                  <span className="text-[11px] sm:text-xs text-[#8C9A8F] block font-bold">HUMIDITY</span>
+                  <strong className="text-base sm:text-2xl font-black text-[#69B82F] block leading-tight">
                     {room.humidity}
                   </strong>
-                  <span className="text-[9px] text-[#8C9A8F] block">
+                  <span className="text-[10px] sm:text-xs text-[#8C9A8F] block font-semibold">
                     %
                   </span>
                 </div>

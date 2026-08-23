@@ -341,7 +341,7 @@ export const SimulationControls: React.FC<SimulationControlsProps> = ({
           className="w-full sm:w-auto min-w-[240px] px-8 py-3.5 rounded-xl bg-[#69B82F] hover:bg-[#78CC38] active:scale-[0.99] text-[#070B08] font-mono font-bold text-sm tracking-wider shadow-lg flex items-center justify-center gap-2.5 transition-all cursor-pointer"
         >
           <Play className="w-4 h-4 fill-current text-[#070B08]" />
-          {isSimulating ? 'SIMULATION IN PROGRESS...' : '▶ RUN SIMULATION'}
+          <span>{isSimulating ? 'SIMULATION IN PROGRESS...' : 'RUN SIMULATION'}</span>
         </button>
 
         <button
@@ -350,7 +350,7 @@ export const SimulationControls: React.FC<SimulationControlsProps> = ({
           className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-[#080F0A] hover:bg-[#0E1B13] active:scale-[0.99] text-[#FAF8F2] font-mono font-semibold text-sm border border-[#1E3F27] flex items-center justify-center gap-2 transition-all cursor-pointer"
         >
           <RotateCcw className="w-4 h-4 text-[#8C9A8F]" />
-          ↻ RESET TO INITIAL
+          <span>RESET TO INITIAL</span>
         </button>
       </div>
     </div>
