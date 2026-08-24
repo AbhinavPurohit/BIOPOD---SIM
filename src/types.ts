@@ -87,6 +87,4 @@ export interface SystemCalibration {
   roomVolumeM3: number; // default 45 m³ (standard 18m² room)
   bioreactorVolumeLiters: number; // default 12 L
   tempUnit: 'C' | 'F';
-  soundEnabled: boolean;
-  soundVolume: number; // 0..1
 }

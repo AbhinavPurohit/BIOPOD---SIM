@@ -1,5 +1,5 @@
 import React from 'react';
-import { Volume2, VolumeX, Settings, Sparkles, BookOpen } from 'lucide-react';
+import { Settings, BookOpen } from 'lucide-react';
 import { SimulationPreset } from '../types';
 
 interface HeaderProps {
@@ -8,8 +8,6 @@ interface HeaderProps {
   onSelectPreset: (preset: SimulationPreset) => void;
   isSimulating: boolean;
   currentMinute: number;
-  soundEnabled: boolean;
-  onToggleSound: () => void;
   onOpenSettings: () => void;
   onOpenInfo: () => void;
 }
@@ -20,8 +18,6 @@ export const Header: React.FC<HeaderProps> = ({
   onSelectPreset,
   isSimulating,
   currentMinute,
-  soundEnabled,
-  onToggleSound,
   onOpenSettings,
   onOpenInfo,
 }) => {
@@ -97,20 +93,6 @@ export const Header: React.FC<HeaderProps> = ({
               ))}
             </select>
           </div>
-
-          {/* Sound Toggle */}
-          <button
-            id="sound-toggle-btn"
-            onClick={onToggleSound}
-            title={soundEnabled ? 'Hardware Acoustics Mute' : 'Hardware Acoustics Unmute'}
-            className={`p-2 rounded-lg border text-xs flex items-center justify-center transition-all cursor-pointer ${
-              soundEnabled
-                ? 'bg-[#0B3A1A] border-[#69B82F] text-[#69B82F]'
-                : 'bg-[#141C16] border-[#2B3E30] text-[#8C9A8F] hover:text-[#FAF8F2]'
-            }`}
-          >
-            {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
-          </button>
 
           {/* Technical Specs & Principles Modal */}
           <button

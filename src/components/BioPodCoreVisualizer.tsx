@@ -48,6 +48,8 @@ export const BioPodCoreVisualizer: React.FC<BioPodCoreVisualizerProps> = ({
     tempUnit === 'C' ? `${room.temperature}°C` : `${((room.temperature * 9) / 5 + 32).toFixed(1)}°F`;
 
   const inputAqiData = calculatePM25AQI(room.pm25);
+  // Live simulated clean air output matching timeline progression
+  const simOutputAqiData = calculatePM25AQI(currentPoint.roomPm25);
   const numOccupants = room.occupants !== undefined ? room.occupants : 2;
 
   return (
@@ -142,11 +144,11 @@ export const BioPodCoreVisualizer: React.FC<BioPodCoreVisualizerProps> = ({
                   </div>
                 </div>
 
-                {/* Input Metric 3: AIR QUALITY INDEX (AQI) */}
+                {/* Input Metric 3: AQI INPUT */}
                 <div className="bg-[#0C1711] p-2.5 rounded-lg border border-[#1E3F27]">
                   <div className="flex items-center justify-between text-xs text-[#8C9A8F] mb-1">
                     <span className="flex items-center gap-1.5 font-medium text-[#FAF8F2]">
-                      <Gauge className="w-3.5 h-3.5 text-[#69B82F]" /> AIR INDEX (AQI)
+                      <Gauge className="w-3.5 h-3.5 text-[#69B82F]" /> AQI INPUT
                     </span>
                     <span className="text-[9px] text-[#8C9A8F] bg-[#060D09] px-1 py-0.2 rounded">US EPA</span>
                   </div>
@@ -586,6 +588,37 @@ export const BioPodCoreVisualizer: React.FC<BioPodCoreVisualizerProps> = ({
                   <div className="mt-1.5 text-xs text-[#FAF8F2] font-bold flex items-baseline justify-between border-t border-[#1E3F27] pt-1">
                     <span className="text-[#8C9A8F] font-normal">O₂ GENERATED</span>
                     <span className="text-[#69B82F]">+{currentPoint.o2GeneratedLiters} L ({currentPoint.roomO2Pct}%)</span>
+                  </div>
+                </div>
+
+                {/* Metric 5: AQI OUTPUT (Live Simulation) */}
+                <div className="bg-[#0C1711] p-2.5 rounded-lg border border-[#1E3F27]">
+                  <div className="flex items-center justify-between text-xs text-[#8C9A8F] mb-1">
+                    <span className="flex items-center gap-1.5 font-medium text-[#FAF8F2]">
+                      <Gauge className="w-3.5 h-3.5 text-[#69B82F]" /> AQI OUTPUT
+                    </span>
+                    <span className="text-[9px] text-[#69B82F] bg-[#0E2818] px-1.5 py-0.2 rounded font-semibold border border-[#1E5C33]">
+                      SIMULATED STREAM
+                    </span>
+                  </div>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-2xl font-bold text-[#69B82F]">{currentPoint.aqi}</span>
+                    <span
+                      className="text-[10px] font-bold px-1.5 py-0.5 rounded uppercase"
+                      style={{
+                        backgroundColor: `${simOutputAqiData.color}25`,
+                        color: simOutputAqiData.color,
+                        border: `1px solid ${simOutputAqiData.color}60`,
+                      }}
+                    >
+                      {simOutputAqiData.label}
+                    </span>
+                  </div>
+                  <div className="text-[10px] text-[#8C9A8F] mt-1 font-sans flex items-center justify-between">
+                    <span>{currentPoint.roomPm25} µg/m³ PM2.5</span>
+                    <span className="text-[#69B82F] font-mono text-[9px]">
+                      {currentPoint.aqi <= 50 ? '✓ EPA Clean Standard' : 'Purification Active'}
+                    </span>
                   </div>
                 </div>
               </div>

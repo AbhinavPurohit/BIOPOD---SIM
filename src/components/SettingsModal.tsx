@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Sliders, Volume2, HardDrive, Compass, Check } from 'lucide-react';
+import { X, Sliders, HardDrive, Compass, Check } from 'lucide-react';
 import { SystemCalibration } from '../types';
 
 interface SettingsModalProps {
@@ -121,25 +121,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 °F
               </button>
             </div>
-          </div>
-
-          {/* Sound acoustics toggle */}
-          <div className="bg-[#F4F1EA] p-3.5 rounded-xl border border-[#DDD8CD] flex items-center justify-between">
-            <div>
-              <span className="font-bold text-[#171A18] block">HARDWARE ACOUSTICS</span>
-              <span className="text-[10px] text-[#6A736C]">Web Audio fan & bubbling synthesizer</span>
-            </div>
-            <button
-              id="settings-sound-toggle-btn"
-              onClick={() => onUpdateCalibration({ soundEnabled: !calibration.soundEnabled })}
-              className={`px-3 py-1.5 font-bold rounded-lg border transition-all ${
-                calibration.soundEnabled
-                  ? 'bg-[#0B4D20] text-white border-[#092D16]'
-                  : 'bg-[#FAF8F2] text-[#6A736C] border-[#D0CBBF]'
-              }`}
-            >
-              {calibration.soundEnabled ? 'ENABLED' : 'MUTED'}
-            </button>
           </div>
         </div>
 

@@ -12,7 +12,6 @@ import {
   generateSimulationData, 
   calculateSimulationResult 
 } from './utils/simulationEngine';
-import { audioSynth } from './utils/audioSynthesizer';
 import { Header } from './components/Header';
 import { BioPodScrollHero } from './components/BioPodScrollHero';
 import { BioPodHeroSection } from './components/BioPodHeroSection';
@@ -41,8 +40,6 @@ export default function App() {
     roomVolumeM3: 45,
     bioreactorVolumeLiters: 12,
     tempUnit: 'C',
-    soundEnabled: false,
-    soundVolume: 0.5,
   });
 
   // Simulation playback state
@@ -96,14 +93,8 @@ export default function App() {
     };
   }, [isSimulating, simulationSpeed]);
 
-  // Sync Hardware Acoustics
-  useEffect(() => {
-    audioSynth.updateAcoustics(controls.fanSpeed, controls.airPump, calibration.soundEnabled);
-  }, [controls.fanSpeed, controls.airPump, calibration.soundEnabled]);
-
   // Handlers
   const handleSelectPreset = (preset: SimulationPreset) => {
-    audioSynth.playClick();
     setCurrentPresetId(preset.id);
     setRoom({ ...preset.room });
     setInitialRoom({ ...preset.room });
@@ -121,12 +112,10 @@ export default function App() {
   };
 
   const handleUpdateControls = (newControls: Partial<BioPodControls>) => {
-    audioSynth.playClick();
     setControls((prev) => ({ ...prev, ...newControls }));
   };
 
   const handleRunSimulation = () => {
-    audioSynth.playClick();
     if (currentMinute >= 60) {
       setCurrentMinute(0);
     }
@@ -134,7 +123,6 @@ export default function App() {
   };
 
   const handleTogglePlay = () => {
-    audioSynth.playClick();
     if (currentMinute >= 60) {
       setCurrentMinute(0);
       setIsSimulating(true);
@@ -144,21 +132,12 @@ export default function App() {
   };
 
   const handleReset = () => {
-    audioSynth.playClick();
     setIsSimulating(false);
     setCurrentMinute(0);
   };
 
   const handleSeekMinute = (min: number) => {
     setCurrentMinute(Math.max(0, Math.min(60, min)));
-  };
-
-  const handleToggleSound = () => {
-    audioSynth.playClick();
-    setCalibration((prev) => ({
-      ...prev,
-      soundEnabled: !prev.soundEnabled,
-    }));
   };
 
   const simulationResult = useMemo(() => {
@@ -177,8 +156,6 @@ export default function App() {
         onSelectPreset={handleSelectPreset}
         isSimulating={isSimulating}
         currentMinute={currentMinute}
-        soundEnabled={calibration.soundEnabled}
-        onToggleSound={handleToggleSound}
         onOpenSettings={() => setShowSettingsModal(true)}
         onOpenInfo={() => setShowPrinciplesModal(true)}
       />
@@ -261,7 +238,7 @@ export default function App() {
           onClose={() => setSelectedTankModal(null)}
           onUpdateLed={(val) => handleUpdateControls({ ledIntensity: val })}
           onUpdatePump={(val) => handleUpdateControls({ airPump: val })}
-          onDoseNutrients={() => audioSynth.playClick()}
+          onDoseNutrients={() => {}}
         />
       )}
 

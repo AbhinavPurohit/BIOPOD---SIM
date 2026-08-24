@@ -13,12 +13,13 @@ import {
   ChevronDown,
   ChevronUp,
   FlaskConical,
-  Atom
+  Atom,
+  Gauge
 } from 'lucide-react';
 import { SimulationDataPoint } from '../types';
-import { BIOPOD_EQUATIONS_REFERENCE } from '../utils/simulationEngine';
+import { BIOPOD_EQUATIONS_REFERENCE, calculatePM25AQI } from '../utils/simulationEngine';
 
-type MetricTab = 'CO2' | 'PM25' | 'ALGAE' | 'COMBINED';
+type MetricTab = 'AQI' | 'CO2' | 'PM25' | 'ALGAE' | 'COMBINED';
 
 interface LiveSimulationGraphProps {
   dataPoints: SimulationDataPoint[];
@@ -41,7 +42,7 @@ export const LiveSimulationGraph: React.FC<LiveSimulationGraphProps> = ({
   onSeekMinute,
   onChangeSpeed,
 }) => {
-  const [activeTab, setActiveTab] = useState<MetricTab>('CO2');
+  const [activeTab, setActiveTab] = useState<MetricTab>('AQI');
   const [hoveredMinute, setHoveredMinute] = useState<number | null>(null);
   const [showEquations, setShowEquations] = useState<boolean>(false);
   const [showO2Line, setShowO2Line] = useState<boolean>(true);
@@ -63,14 +64,21 @@ export const LiveSimulationGraph: React.FC<LiveSimulationGraphProps> = ({
   const graphWidth = width - padding.left - padding.right;
   const graphHeight = height - padding.top - padding.bottom;
 
-  // Scale calculations for Left Y-Axis (CO2 ppm, PM2.5, Algae)
-  let minY = 400;
-  let maxY = 1500;
-  let unit = 'ppm';
-  let title = 'CO₂ FIXATION & O₂ EVOLUTION TELEMETRY';
+  // Scale calculations for Left Y-Axis (AQI, CO2 ppm, PM2.5, Algae)
+  let minY = 0;
+  let maxY = 200;
+  let unit = 'AQI index';
+  let title = 'AIR QUALITY INDEX (AQI) PROGRESSION CURVE';
   let primaryColor = '#69B82F'; // BioPod Vibrant Green
 
-  if (activeTab === 'CO2') {
+  if (activeTab === 'AQI') {
+    const maxVal = Math.max(...dataPoints.map((d) => d.aqi));
+    minY = 0;
+    maxY = Math.max(50, Math.ceil((maxVal + 20) / 25) * 25);
+    unit = 'AQI (EPA)';
+    title = 'AIR QUALITY INDEX (AQI) PROGRESSION (US EPA STANDARD)';
+    primaryColor = '#69B82F';
+  } else if (activeTab === 'CO2') {
     const minVal = Math.min(...dataPoints.map((d) => d.roomCo2));
     const maxVal = Math.max(...dataPoints.map((d) => d.roomCo2));
     minY = Math.max(350, Math.floor((minVal - 50) / 100) * 100);
@@ -140,7 +148,9 @@ export const LiveSimulationGraph: React.FC<LiveSimulationGraphProps> = ({
 
   // Main curve path
   let mainPath = '';
-  if (activeTab === 'CO2') {
+  if (activeTab === 'AQI') {
+    mainPath = generatePath((d) => d.aqi);
+  } else if (activeTab === 'CO2') {
     mainPath = generatePath((d) => d.roomCo2);
   } else if (activeTab === 'PM25') {
     mainPath = generatePath((d) => d.roomPm25);
@@ -198,6 +208,18 @@ export const LiveSimulationGraph: React.FC<LiveSimulationGraphProps> = ({
           {/* Metric Selector Tabs */}
           <div className="flex items-center gap-1.5 bg-[#060D09] p-1 rounded-lg border border-[#1E3F27]">
             <button
+              id="tab-aqi"
+              onClick={() => setActiveTab('AQI')}
+              className={`px-3.5 py-1 text-[11px] font-mono font-bold rounded transition-all flex items-center gap-1.5 ${
+                activeTab === 'AQI'
+                  ? 'bg-[#0B4D20] text-[#FAF8F2] shadow-xs border border-[#69B82F]/60'
+                  : 'text-[#A8DDA2]/60 hover:text-[#FAF8F2]'
+              }`}
+            >
+              <Gauge className="w-3 h-3 text-[#69B82F]" />
+              <span>AQI</span>
+            </button>
+            <button
               id="tab-co2"
               onClick={() => setActiveTab('CO2')}
               className={`px-3.5 py-1 text-[11px] font-mono font-bold rounded transition-all flex items-center gap-1 ${
@@ -254,6 +276,20 @@ export const LiveSimulationGraph: React.FC<LiveSimulationGraphProps> = ({
           </div>
           <div>
             <span className="text-[#A8DDA2]/50 text-[10px] block flex items-center gap-1">
+              <Gauge className="w-3 h-3 text-[#69B82F]" /> AQI (EPA)
+            </span>
+            <strong className="text-[#69B82F] text-sm flex items-center gap-1.5">
+              {currentData.aqi} 
+              <span className="text-[9px] px-1 py-0.2 rounded font-semibold" style={{
+                backgroundColor: `${calculatePM25AQI(currentData.roomPm25).color}25`,
+                color: calculatePM25AQI(currentData.roomPm25).color
+              }}>
+                {calculatePM25AQI(currentData.roomPm25).label}
+              </span>
+            </strong>
+          </div>
+          <div>
+            <span className="text-[#A8DDA2]/50 text-[10px] block flex items-center gap-1">
               <Flame className="w-3 h-3 text-[#E67E22]" /> ROOM CO₂
             </span>
             <strong className="text-[#69B82F] text-sm">
@@ -262,29 +298,41 @@ export const LiveSimulationGraph: React.FC<LiveSimulationGraphProps> = ({
           </div>
           <div>
             <span className="text-[#A8DDA2]/50 text-[10px] block flex items-center gap-1">
-              <Sparkles className="w-3 h-3 text-[#42B9D9]" /> O₂ GENERATED
+              <Wind className="w-3 h-3 text-[#42B9D9]" /> PM2.5 PARTICULATE
             </span>
             <strong className="text-[#42B9D9] text-sm">
-              +{currentData.o2GeneratedLiters} L <span className="text-[10px] font-normal text-[#A8DDA2]/40">({currentData.roomO2Pct}%)</span>
-            </strong>
-          </div>
-          <div>
-            <span className="text-[#A8DDA2]/50 text-[10px] block flex items-center gap-1">
-              <Wind className="w-3 h-3 text-[#E4B83D]" /> PM2.5 PARTICULATES
-            </span>
-            <strong className="text-[#E4B83D] text-sm">
               {currentData.roomPm25} <span className="text-xs font-normal">µg/m³</span>
             </strong>
           </div>
           <div className="col-span-2 sm:col-span-1">
-            <span className="text-[#A8DDA2]/50 text-[10px] block">
-              ALGAE BIOMASS DENSITY
+            <span className="text-[#A8DDA2]/50 text-[10px] block flex items-center gap-1">
+              <Sparkles className="w-3 h-3 text-[#69B82F]" /> O₂ GENERATED
             </span>
-            <strong className="text-[#69B82F] text-sm">
-              {currentData.algaeDensity}% <span className="text-[10px] font-normal text-[#69B82F]/70">(pH 7.1)</span>
+            <strong className="text-[#FAF8F2] text-sm">
+              +{currentData.o2GeneratedLiters} L <span className="text-[10px] font-normal text-[#69B82F]/70">({currentData.roomO2Pct}%)</span>
             </strong>
           </div>
         </div>
+
+        {/* Interactive Legend for AQI */}
+        {activeTab === 'AQI' && (
+          <div className="flex flex-wrap items-center justify-between gap-2 px-2.5 py-1.5 mb-2.5 bg-[#060D09] rounded-md border border-[#1E3F27] text-[10px] font-mono">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1.5">
+                <span className="w-3 h-1 bg-[#69B82F] rounded-full inline-block"></span>
+                <span className="text-[#FAF8F2] font-semibold">Live Room AQI Curve ↓</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="px-1.5 py-0.2 rounded text-[9px] font-bold" style={{ backgroundColor: `${calculatePM25AQI(currentData.roomPm25).color}25`, color: calculatePM25AQI(currentData.roomPm25).color, border: `1px solid ${calculatePM25AQI(currentData.roomPm25).color}60` }}>
+                  {currentData.aqi} AQI • {calculatePM25AQI(currentData.roomPm25).label}
+                </span>
+              </div>
+            </div>
+            <div className="text-[#A8DDA2]/60 text-[9px] font-sans">
+              EPA Standard: ≤50 Good • 51-100 Moderate • 101-150 Unhealthy for Sensitive Groups
+            </div>
+          </div>
+        )}
 
         {/* Dual-Curve Interactive Legend for CO2 & O2 */}
         {activeTab === 'CO2' && (
@@ -383,6 +431,13 @@ export const LiveSimulationGraph: React.FC<LiveSimulationGraphProps> = ({
                 <stop offset="100%" stopColor="#030805" stopOpacity="1" />
               </radialGradient>
 
+              {/* AQI Area Gradient */}
+              <linearGradient id="aqi-area-grad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#69B82F" stopOpacity="0.38" />
+                <stop offset="60%" stopColor="#0B4D20" stopOpacity="0.14" />
+                <stop offset="100%" stopColor="#0B4D20" stopOpacity="0.0" />
+              </linearGradient>
+
               {/* CO2 Area Gradient */}
               <linearGradient id="co2-area-grad" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="#69B82F" stopOpacity="0.32" />
@@ -432,6 +487,32 @@ export const LiveSimulationGraph: React.FC<LiveSimulationGraphProps> = ({
               fill="url(#lab-micro-grid)"
               opacity="0.9"
             />
+
+            {/* EPA Clean Air Target Zone (< 50 AQI) */}
+            {activeTab === 'AQI' && (
+              <g>
+                <rect
+                  x={padding.left}
+                  y={getY(Math.min(maxY, 50))}
+                  width={graphWidth}
+                  height={Math.max(0, getY(minY) - getY(Math.min(maxY, 50)))}
+                  fill="rgba(11, 77, 32, 0.22)"
+                  stroke="rgba(105, 184, 47, 0.3)"
+                  strokeDasharray="4 4"
+                  strokeWidth="0.8"
+                />
+                <text
+                  x={padding.left + 8}
+                  y={getY(Math.min(maxY, 50)) + 14}
+                  fill="#69B82F"
+                  fontSize="9"
+                  fontFamily="monospace"
+                  opacity="0.9"
+                >
+                  ✓ EPA Good Air Standard (AQI ≤ 50)
+                </text>
+              </g>
+            )}
 
             {/* Cognitive Optimal Baseline Zone Highlight (<800 ppm for CO2) */}
             {activeTab === 'CO2' && (
@@ -604,14 +685,16 @@ export const LiveSimulationGraph: React.FC<LiveSimulationGraphProps> = ({
               </text>
             )}
 
-            {/* Single Technical Left Curve (CO2, PM2.5, or Algae) */}
+            {/* Single Technical Left Curve (AQI, CO2, PM2.5, or Algae) */}
             {activeTab !== 'COMBINED' && (
               <>
                 {/* Luminous Area Fill under curve */}
                 <path
                   d={`${mainPath} L ${getX(60)} ${height - padding.bottom} L ${getX(0)} ${height - padding.bottom} Z`}
                   fill={
-                    activeTab === 'CO2' 
+                    activeTab === 'AQI'
+                      ? 'url(#aqi-area-grad)'
+                      : activeTab === 'CO2' 
                       ? 'url(#co2-area-grad)' 
                       : activeTab === 'PM25' 
                       ? 'url(#pm25-area-grad)' 
@@ -691,7 +774,9 @@ export const LiveSimulationGraph: React.FC<LiveSimulationGraphProps> = ({
             <circle
               cx={getX(currentMinute)}
               cy={
-                activeTab === 'CO2'
+                activeTab === 'AQI'
+                  ? getY(dataPoints[currentMinute]?.aqi || dataPoints[0].aqi)
+                  : activeTab === 'CO2'
                   ? getY(dataPoints[currentMinute]?.roomCo2 || dataPoints[0].roomCo2)
                   : activeTab === 'PM25'
                   ? getY(dataPoints[currentMinute]?.roomPm25 || dataPoints[0].roomPm25)
@@ -730,7 +815,9 @@ export const LiveSimulationGraph: React.FC<LiveSimulationGraphProps> = ({
                 <circle
                   cx={getX(hoveredMinute)}
                   cy={
-                    activeTab === 'CO2'
+                    activeTab === 'AQI'
+                      ? getY(dataPoints[hoveredMinute]?.aqi || 0)
+                      : activeTab === 'CO2'
                       ? getY(dataPoints[hoveredMinute]?.roomCo2 || 0)
                       : activeTab === 'PM25'
                       ? getY(dataPoints[hoveredMinute]?.roomPm25 || 0)
@@ -754,25 +841,38 @@ export const LiveSimulationGraph: React.FC<LiveSimulationGraphProps> = ({
                 )}
 
                 {/* Floating Tooltip Pill */}
-                <g transform={`translate(${Math.min(width - padding.right - 140, Math.max(padding.left + 10, getX(hoveredMinute) - 70))}, ${padding.top + 8})`}>
+                <g transform={`translate(${Math.min(width - padding.right - 150, Math.max(padding.left + 10, getX(hoveredMinute) - 75))}, ${padding.top + 8})`}>
                   <rect
-                    width="140"
-                    height="48"
+                    width="150"
+                    height="52"
                     rx="6"
-                    fill="#0E1210"
-                    stroke="#2A2F2C"
-                    strokeWidth="1"
-                    opacity="0.95"
+                    fill="#080F0A"
+                    stroke="#1E3F27"
+                    strokeWidth="1.5"
+                    opacity="0.96"
                   />
-                  <text x="8" y="15" fill="#F7F5EF" fontSize="9" fontFamily="monospace" fontWeight="bold">
+                  <text x="8" y="14" fill="#FAF8F2" fontSize="9" fontFamily="monospace" fontWeight="bold">
                     T = {hoveredMinute} min
                   </text>
-                  <text x="8" y="29" fill="#69B82F" fontSize="9" fontFamily="monospace">
-                    CO₂: {dataPoints[hoveredMinute]?.roomCo2} ppm
-                  </text>
-                  <text x="8" y="42" fill="#42B9D9" fontSize="9" fontFamily="monospace">
-                    O₂: +{dataPoints[hoveredMinute]?.o2GeneratedLiters} L ({dataPoints[hoveredMinute]?.roomO2Pct}%)
-                  </text>
+                  {activeTab === 'AQI' ? (
+                    <>
+                      <text x="8" y="28" fill="#69B82F" fontSize="9" fontFamily="monospace" fontWeight="bold">
+                        AQI: {dataPoints[hoveredMinute]?.aqi} ({calculatePM25AQI(dataPoints[hoveredMinute]?.roomPm25).label})
+                      </text>
+                      <text x="8" y="42" fill="#42B9D9" fontSize="8.5" fontFamily="monospace">
+                        PM2.5: {dataPoints[hoveredMinute]?.roomPm25}µg • CO₂: {dataPoints[hoveredMinute]?.roomCo2}ppm
+                      </text>
+                    </>
+                  ) : (
+                    <>
+                      <text x="8" y="28" fill="#69B82F" fontSize="9" fontFamily="monospace">
+                        CO₂: {dataPoints[hoveredMinute]?.roomCo2} ppm
+                      </text>
+                      <text x="8" y="42" fill="#42B9D9" fontSize="9" fontFamily="monospace">
+                        O₂: +{dataPoints[hoveredMinute]?.o2GeneratedLiters} L ({dataPoints[hoveredMinute]?.roomO2Pct}%)
+                      </text>
+                    </>
+                  )}
                 </g>
               </g>
             )}
