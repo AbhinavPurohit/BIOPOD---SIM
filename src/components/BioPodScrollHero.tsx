@@ -376,35 +376,35 @@ export const BioPodScrollHero: React.FC<BioPodScrollHeroProps> = ({
             y: reducedMotion ? 0 : ctaY,
             pointerEvents: activeStage === 4 ? 'auto' : 'none',
           }}
-          className="absolute inset-x-4 bottom-8 z-20 max-w-2xl mx-auto text-center"
+          className="absolute inset-x-4 bottom-6 z-20 max-w-lg mx-auto text-center"
         >
-          <div className="bg-[#080E0A]/95 border border-[#1E3F27] p-5 sm:p-6 rounded-2xl sm:rounded-3xl backdrop-blur-2xl shadow-2xl space-y-4">
+          <div className="bg-[#080E0A]/95 border border-[#1E3F27] p-3.5 sm:p-4.5 rounded-xl sm:rounded-2xl backdrop-blur-2xl shadow-2xl space-y-2.5">
             <div>
-              <h3 className="text-xl sm:text-2xl font-extrabold text-[#FAF8F2] tracking-tight">
+              <h3 className="text-lg sm:text-xl font-extrabold text-[#FAF8F2] tracking-tight">
                 Experience BioPod in Action
               </h3>
-              <p className="text-xs sm:text-sm text-[#A0B2A5] max-w-lg mx-auto mt-1">
+              <p className="text-[11px] sm:text-xs text-[#A0B2A5] max-w-md mx-auto mt-0.5 leading-relaxed">
                 Run live multi-occupant simulations, adjust fan speeds, and test microalgae carbon reduction in real time.
               </p>
             </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-3 pt-1 font-mono text-xs">
+            <div className="flex flex-wrap items-center justify-center gap-2.5 pt-0.5 font-mono text-xs">
               <button
                 id="hero-scroll-run-simulation-btn"
                 onClick={scrollToSim}
-                className="px-6 py-3 rounded-xl bg-[#69B82F] hover:bg-[#58A025] text-[#060A07] font-extrabold tracking-wider uppercase transition-all shadow-lg hover:shadow-green-900/40 flex items-center gap-2 cursor-pointer scale-100 hover:scale-105 active:scale-95 text-xs sm:text-sm"
+                className="px-4.5 py-2 rounded-lg bg-[#69B82F] hover:bg-[#58A025] text-[#060A07] font-extrabold tracking-wider uppercase transition-all shadow-md hover:shadow-green-900/40 flex items-center gap-1.5 cursor-pointer scale-100 hover:scale-105 active:scale-95 text-xs"
               >
-                <Sliders className="w-4 h-4" />
+                <Sliders className="w-3.5 h-3.5" />
                 <span>Run Simulation</span>
-                <ArrowDown className="w-4 h-4" />
+                <ArrowDown className="w-3.5 h-3.5" />
               </button>
 
               <button
                 id="hero-scroll-principles-btn"
                 onClick={onOpenPrinciples}
-                className="px-4 py-3 rounded-xl bg-[#121A15] hover:bg-[#1B2920] border border-[#253D2C] text-[#FAF8F2] font-bold transition-all flex items-center gap-2 cursor-pointer text-xs sm:text-sm"
+                className="px-3.5 py-2 rounded-lg bg-[#121A15] hover:bg-[#1B2920] border border-[#253D2C] text-[#FAF8F2] font-bold transition-all flex items-center gap-1.5 cursor-pointer text-xs"
               >
-                <Layers className="w-4 h-4 text-[#69B82F]" />
+                <Layers className="w-3.5 h-3.5 text-[#69B82F]" />
                 <span>Principles & Science</span>
               </button>
             </div>
