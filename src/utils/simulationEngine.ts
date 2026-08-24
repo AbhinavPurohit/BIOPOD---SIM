@@ -45,6 +45,26 @@ export function calculatePM25AQI(pm25: number): { aqi: number; label: string; co
 }
 
 /**
+ * Calculates approximate PM2.5 in µg/m³ from an EPA AQI value
+ */
+export function calculateAQItoPM25(aqi: number): number {
+  const index = Math.max(1, Math.min(500, aqi));
+  if (index <= 50) {
+    return Number(((index / 50) * 12.0).toFixed(1));
+  } else if (index <= 100) {
+    return Number((12.1 + ((index - 51) / (100 - 51)) * (35.4 - 12.1)).toFixed(1));
+  } else if (index <= 150) {
+    return Number((35.5 + ((index - 101) / (150 - 101)) * (55.4 - 35.5)).toFixed(1));
+  } else if (index <= 200) {
+    return Number((55.5 + ((index - 151) / (200 - 151)) * (150.4 - 55.5)).toFixed(1));
+  } else if (index <= 300) {
+    return Number((150.5 + ((index - 201) / (300 - 201)) * (250.4 - 150.5)).toFixed(1));
+  } else {
+    return Number((250.5 + ((index - 301) / (500 - 301)) * (500.0 - 250.5)).toFixed(1));
+  }
+}
+
+/**
  * Generates exact minute-by-minute simulation curve from t = 0 to 60 minutes
  */
 export function generateSimulationData(

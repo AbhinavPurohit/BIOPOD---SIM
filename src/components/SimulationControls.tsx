@@ -11,9 +11,11 @@ import {
   Check, 
   RefreshCw,
   Power,
-  Users
+  Users,
+  Gauge
 } from 'lucide-react';
 import { BioPodControls, OperatingMode, RoomConditions } from '../types';
+import { calculatePM25AQI, calculateAQItoPM25 } from '../utils/simulationEngine';
 
 interface SimulationControlsProps {
   room: RoomConditions;
@@ -36,6 +38,12 @@ export const SimulationControls: React.FC<SimulationControlsProps> = ({
 }) => {
   const modes: OperatingMode[] = ['ECO', 'AUTO', 'BOOST'];
   const numOccupants = room.occupants !== undefined ? room.occupants : 2;
+  const aqiInfo = calculatePM25AQI(room.pm25);
+
+  const handleAqiChange = (newAqi: number) => {
+    const calculatedPm25 = calculateAQItoPM25(newAqi);
+    onUpdateRoom({ pm25: calculatedPm25 });
+  };
 
   return (
     <div
@@ -98,7 +106,7 @@ export const SimulationControls: React.FC<SimulationControlsProps> = ({
                   key={n}
                   type="button"
                   onClick={() => onUpdateRoom({ occupants: n })}
-                  className={`flex-1 py-1 text-[10px] font-mono font-bold rounded border transition-all ${
+                  className={`flex-1 py-1 text-[10px] font-mono font-bold rounded border transition-all cursor-pointer ${
                     numOccupants === n
                       ? 'bg-[#1E5C33] text-white border-[#69B82F]'
                       : 'bg-[#0C1711] text-[#8C9A8F] border-[#1E3F27] hover:bg-[#14261B]'
@@ -137,7 +145,69 @@ export const SimulationControls: React.FC<SimulationControlsProps> = ({
             </div>
           </div>
 
-          {/* Slider 2: PM2.5 */}
+          {/* AQI Variable Control */}
+          <div className="bg-[#080F0A] p-3.5 rounded-xl border border-[#1E3F27]">
+            <div className="flex justify-between items-center text-xs font-mono mb-1.5">
+              <span className="font-semibold text-[#FAF8F2] flex items-center gap-1.5">
+                <Gauge className="w-3.5 h-3.5 text-[#69B82F]" /> AQI
+              </span>
+              <div className="flex items-center gap-2">
+                <span
+                  className="text-[10px] font-bold px-2 py-0.5 rounded font-mono border"
+                  style={{
+                    backgroundColor: `${aqiInfo.color}25`,
+                    color: aqiInfo.color,
+                    borderColor: `${aqiInfo.color}60`,
+                  }}
+                >
+                  {aqiInfo.label}
+                </span>
+                <span className="font-bold text-[#69B82F] text-sm">
+                  {aqiInfo.aqi} <span className="text-xs font-normal">AQI</span>
+                </span>
+              </div>
+            </div>
+            <input
+              id="slider-room-aqi"
+              type="range"
+              min="10"
+              max="300"
+              step="1"
+              value={aqiInfo.aqi}
+              onChange={(e) => handleAqiChange(Number(e.target.value))}
+              className="w-full accent-[#69B82F] cursor-pointer"
+            />
+            <div className="flex justify-between text-[10px] font-mono text-[#8C9A8F] mt-1">
+              <span>50 (Good)</span>
+              <span>100 (Moderate)</span>
+              <span>150 (Unhealthy)</span>
+              <span>200+ (Hazardous)</span>
+            </div>
+            {/* Quick selection chips for standard AQI states */}
+            <div className="flex gap-1.5 mt-2">
+              {[
+                { val: 45, label: '45 (Good)' },
+                { val: 85, label: '85 (Moderate)' },
+                { val: 156, label: '156 (Unhealthy)' },
+                { val: 220, label: '220 (Very Unhealthy)' },
+              ].map((chip) => (
+                <button
+                  key={chip.val}
+                  type="button"
+                  onClick={() => handleAqiChange(chip.val)}
+                  className={`flex-1 py-1 text-[9.5px] font-mono font-medium rounded border transition-all cursor-pointer ${
+                    Math.abs(aqiInfo.aqi - chip.val) <= 5
+                      ? 'bg-[#1E5C33] text-white border-[#69B82F]'
+                      : 'bg-[#0C1711] text-[#8C9A8F] border-[#1E3F27] hover:bg-[#14261B]'
+                  }`}
+                >
+                  {chip.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Slider 2: PM2.5 (Synchronized) */}
           <div className="bg-[#080F0A] p-3.5 rounded-xl border border-[#1E3F27]">
             <div className="flex justify-between items-center text-xs font-mono mb-1.5">
               <span className="font-semibold text-[#FAF8F2] flex items-center gap-1.5">
@@ -152,7 +222,7 @@ export const SimulationControls: React.FC<SimulationControlsProps> = ({
               type="range"
               min="0"
               max="200"
-              step="5"
+              step="1"
               value={room.pm25}
               onChange={(e) => onUpdateRoom({ pm25: Number(e.target.value) })}
               className="w-full accent-[#69B82F] cursor-pointer"
@@ -161,42 +231,6 @@ export const SimulationControls: React.FC<SimulationControlsProps> = ({
               <span>0 µg/m³ (Clean Room)</span>
               <span>35 µg/m³ (Moderate)</span>
               <span>150+ µg/m³ (Smog)</span>
-            </div>
-          </div>
-
-          {/* Slider 3: Temperature & Humidity in 2 Columns */}
-          <div className="grid grid-cols-2 gap-3">
-            <div className="bg-[#080F0A] p-3 rounded-xl border border-[#1E3F27]">
-              <div className="flex justify-between items-center text-xs font-mono mb-1">
-                <span className="font-semibold text-[#FAF8F2]">TEMP</span>
-                <span className="font-bold text-[#69B82F] text-xs">{room.temperature}°C</span>
-              </div>
-              <input
-                id="slider-room-temp"
-                type="range"
-                min="18"
-                max="34"
-                step="1"
-                value={room.temperature}
-                onChange={(e) => onUpdateRoom({ temperature: Number(e.target.value) })}
-                className="w-full accent-[#69B82F] cursor-pointer"
-              />
-            </div>
-            <div className="bg-[#080F0A] p-3 rounded-xl border border-[#1E3F27]">
-              <div className="flex justify-between items-center text-xs font-mono mb-1">
-                <span className="font-semibold text-[#FAF8F2]">HUMIDITY</span>
-                <span className="font-bold text-[#69B82F] text-xs">{room.humidity}%</span>
-              </div>
-              <input
-                id="slider-room-humidity"
-                type="range"
-                min="30"
-                max="85"
-                step="5"
-                value={room.humidity}
-                onChange={(e) => onUpdateRoom({ humidity: Number(e.target.value) })}
-                className="w-full accent-[#69B82F] cursor-pointer"
-              />
             </div>
           </div>
         </div>
@@ -327,6 +361,42 @@ export const SimulationControls: React.FC<SimulationControlsProps> = ({
                   [ {m} ]
                 </button>
               ))}
+            </div>
+          </div>
+
+          {/* Temperature & Humidity Section in Right Column (Directly Below Operating Mode) */}
+          <div className="grid grid-cols-2 gap-3">
+            <div className="bg-[#080F0A] p-3.5 rounded-xl border border-[#1E3F27]">
+              <div className="flex justify-between items-center text-xs font-mono mb-1.5">
+                <span className="font-semibold text-[#FAF8F2]">TEMP</span>
+                <span className="font-bold text-[#69B82F] text-xs">{room.temperature}°C</span>
+              </div>
+              <input
+                id="slider-room-temp"
+                type="range"
+                min="18"
+                max="34"
+                step="1"
+                value={room.temperature}
+                onChange={(e) => onUpdateRoom({ temperature: Number(e.target.value) })}
+                className="w-full accent-[#69B82F] cursor-pointer"
+              />
+            </div>
+            <div className="bg-[#080F0A] p-3.5 rounded-xl border border-[#1E3F27]">
+              <div className="flex justify-between items-center text-xs font-mono mb-1.5">
+                <span className="font-semibold text-[#FAF8F2]">HUMIDITY</span>
+                <span className="font-bold text-[#69B82F] text-xs">{room.humidity}%</span>
+              </div>
+              <input
+                id="slider-room-humidity"
+                type="range"
+                min="30"
+                max="85"
+                step="5"
+                value={room.humidity}
+                onChange={(e) => onUpdateRoom({ humidity: Number(e.target.value) })}
+                className="w-full accent-[#69B82F] cursor-pointer"
+              />
             </div>
           </div>
 
